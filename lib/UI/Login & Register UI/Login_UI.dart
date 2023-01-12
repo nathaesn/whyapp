@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:whyapp/Theme.dart';
 import 'package:whyapp/UI/Login%20&%20Register%20UI/Register_UI.dart';
+import 'package:whyapp/UI/MainCourse/HomeScreen_UI.dart';
 
 class LoginUI extends StatefulWidget {
   const LoginUI({Key? key}) : super(key: key);
@@ -11,8 +12,17 @@ class LoginUI extends StatefulWidget {
 }
 
 class _LoginUIState extends State<LoginUI> {
+  //GLOBAL KEY
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  //CONTROLLER
+  TextEditingController email_controller = TextEditingController();
+  TextEditingController password_controller = TextEditingController();
+
+  //BOOLEAN
   bool ishide = true;
+
+  //Start
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +81,15 @@ class _LoginUIState extends State<LoginUI> {
                   height: 54,
                   child: ElevatedButton(
                       onPressed: () {
-                        if (formkey.currentState!.validate()) {}
+                        if (formkey.currentState!.validate()) {
+                          //Masukkan Navigasi ini ke fungsi firebase
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomeScreenUI(),
+                              ),
+                              (route) => false);
+                        }
                       },
                       // ignore: sort_child_properties_last
                       child: Text(
@@ -192,6 +210,7 @@ class _LoginUIState extends State<LoginUI> {
                 ),
               ], color: inputtxtbg, borderRadius: BorderRadius.circular(50)),
               child: TextFormField(
+                controller: email_controller,
                 keyboardType: TextInputType.emailAddress,
                 validator: (val) =>
                     val!.isEmpty ? 'Mohon Masukkan Email Anda!' : null,
@@ -217,6 +236,7 @@ class _LoginUIState extends State<LoginUI> {
                 ),
               ], color: inputtxtbg, borderRadius: BorderRadius.circular(50)),
               child: TextFormField(
+                controller: password_controller,
                 obscureText: ishide ? true : false,
                 validator: (val) =>
                     val!.isEmpty ? 'Mohon Masukkan Password Anda!' : null,

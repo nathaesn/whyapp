@@ -11,8 +11,19 @@ class RegisterUI extends StatefulWidget {
 }
 
 class _RegisterUIState extends State<RegisterUI> {
+  //GLOBAL KEY
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  //Controller
+  TextEditingController username_controller = TextEditingController();
+  TextEditingController email_controller = TextEditingController();
+  TextEditingController password_controller = TextEditingController();
+
+  //Boolean
   bool ishide = true;
+
+  //Start
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,6 +190,7 @@ class _RegisterUIState extends State<RegisterUI> {
                 ),
               ], color: inputtxtbg, borderRadius: BorderRadius.circular(50)),
               child: TextFormField(
+                controller: username_controller,
                 keyboardType: TextInputType.emailAddress,
                 validator: (val) =>
                     val!.isEmpty ? 'Mohon Masukkan Username Anda!' : null,
@@ -204,6 +216,7 @@ class _RegisterUIState extends State<RegisterUI> {
                 ),
               ], color: inputtxtbg, borderRadius: BorderRadius.circular(50)),
               child: TextFormField(
+                controller: email_controller,
                 keyboardType: TextInputType.emailAddress,
                 validator: (val) =>
                     val!.isEmpty ? 'Mohon Masukkan Email Anda!' : null,
@@ -229,6 +242,7 @@ class _RegisterUIState extends State<RegisterUI> {
                 ),
               ], color: inputtxtbg, borderRadius: BorderRadius.circular(50)),
               child: TextFormField(
+                controller: password_controller,
                 obscureText: ishide ? true : false,
                 validator: (val) =>
                     val!.isEmpty ? 'Mohon Masukkan Password Anda!' : null,
