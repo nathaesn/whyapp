@@ -4,6 +4,8 @@ import 'package:whyapp/Theme.dart';
 import 'package:whyapp/UI/Login%20&%20Register%20UI/Register_UI.dart';
 import 'package:whyapp/UI/MainCourse/HomeScreen_UI.dart';
 
+import '../../firebase/authController.dart';
+
 class LoginUI extends StatefulWidget {
   const LoginUI({Key? key}) : super(key: key);
 
@@ -13,7 +15,7 @@ class LoginUI extends StatefulWidget {
 
 class _LoginUIState extends State<LoginUI> {
   //GLOBAL KEY
-  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   //CONTROLLER
   TextEditingController email_controller = TextEditingController();
@@ -81,14 +83,26 @@ class _LoginUIState extends State<LoginUI> {
                   height: 54,
                   child: ElevatedButton(
                       onPressed: () {
-                        if (formkey.currentState!.validate()) {
-                          //Masukkan Navigasi ini ke fungsi firebase
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomeScreenUI(),
-                              ),
-                              (route) => false);
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+
+                          AuthenticationHelper()
+                              .signIn(email: email_controller.text, password: password_controller.text)
+                              .then((ok) {
+                            if (ok == null) {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeScreenUI()));
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                  ok,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ));
+                            }
+                          });
                         }
                       },
                       // ignore: sort_child_properties_last
@@ -198,7 +212,7 @@ class _LoginUIState extends State<LoginUI> {
 
   Widget input() {
     return Form(
-        key: formkey,
+        key: _formKey,
         child: Column(
           children: [
             Container(
