@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "167121945283",
+    "project_id": "whyapp-5609b",
+    "storage_bucket": "whyapp-5609b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167121945283:android:8f16c30d635541b89c5876",
+        "android_client_info": {
+          "package_name": "com.example.whyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167121945283-n1ckmkk81umv80m8dk6cdtke0nussjjf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.whyapp",
+            "certificate_hash": "b6e04f866d3d9251c629e745361b61ee68e7450c"
+          }
+        },
+        {
+          "client_id": "167121945283-cn4cig88kke6qfpo1fj8t8lhnurnam84.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcu90jsosV21S0EoH_1wqwIzTMAU_mDkw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167121945283-cn4cig88kke6qfpo1fj8t8lhnurnam84.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

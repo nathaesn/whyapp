@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:whyapp/Theme.dart';
 import 'package:whyapp/UI/Login%20&%20Register%20UI/Login_UI.dart';
+import 'package:whyapp/UI/MainCourse/HomeScreen_UI.dart';
+
+import '../../firebase/authController.dart';
 
 class RegisterUI extends StatefulWidget {
   const RegisterUI({Key? key}) : super(key: key);
@@ -22,8 +25,8 @@ class _RegisterUIState extends State<RegisterUI> {
   //Boolean
   bool ishide = true;
 
-  //Start
 
+  //Start
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +72,27 @@ class _RegisterUIState extends State<RegisterUI> {
                   height: 54,
                   child: ElevatedButton(
                       onPressed: () {
-                        if (formkey.currentState!.validate()) {}
+                        if (formkey.currentState!.validate()) {
+                          formkey.currentState!.save();
+
+                          AuthenticationHelper()
+                              .signUp(email: email_controller.text, password: password_controller.text)
+                              .then((result) {
+                            if (result == null) {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeScreenUI()));
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                  result,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ));
+                            }
+                          });
+                        }
                       },
                       // ignore: sort_child_properties_last
                       child: Text(
