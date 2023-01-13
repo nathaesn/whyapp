@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:whyapp/Theme.dart';
+import 'package:whyapp/UI/MainCourse/HomeScreen_Content/ChatList_UI.dart';
 
 class HomeScreenUI extends StatefulWidget {
   HomeScreenUI({Key? key}) : super(key: key);
@@ -78,9 +79,7 @@ class _HomeScreenUIState extends State<HomeScreenUI>
       body: TabBarView(
         controller: _tabController,
         children: [
-          Center(
-            child: Text("VIEW 1"),
-          ),
+          ChatList(),
           Center(
             child: Text("VIEW 2"),
           ),

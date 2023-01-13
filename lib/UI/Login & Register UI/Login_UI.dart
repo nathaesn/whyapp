@@ -114,20 +114,20 @@ class _LoginUIState extends State<LoginUI> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        width: 80,
-                        color: greycolor,
-                        height: 1,
-                      ),
-                      Text(
-                        " Masuk Dengan ",
-                        style: TextStyle(color: greycolor),
-                      ),
-                      Container(
-                        width: 80,
-                        color: greycolor,
-                        height: 1,
-                      ),
+                        Container(
+                          width: 80,
+                          color: greycolor,
+                          height: 1,
+                        ),
+                        Text(
+                          " Masuk Dengan ",
+                          style: TextStyle(color: greycolor),
+                        ),
+                        Container(
+                          width: 80,
+                          color: greycolor,
+                          height: 1,
+                        ),
                     ],
                   ),
                 ),
@@ -138,6 +138,7 @@ class _LoginUIState extends State<LoginUI> {
                   width: double.infinity,
                   height: 54,
                   child: ElevatedButton(
+                    
                       onPressed: () {},
                       // ignore: sort_child_properties_last
                       child: Row(
