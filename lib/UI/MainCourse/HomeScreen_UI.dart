@@ -20,7 +20,6 @@ class _HomeScreenUIState extends State<HomeScreenUI>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _tabController.animateTo(2);
   }
 
   @override

@@ -24,26 +24,55 @@ class ChatList extends StatelessWidget {
 
 Widget listchat() {
   return ListView.builder(
-    itemCount: 3,
+    itemCount: 23,
     shrinkWrap: true,
-    physics: NeverScrollableScrollPhysics(),
     itemBuilder: (BuildContext context, int index) {
       return Container(
         margin: EdgeInsets.symmetric(vertical: 10),
-        child: ListTile(
-          title: Text(
-            "Keyy",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text("Lorem ipsum dolor sit amet, consectetur."),
-          trailing: Column(
-            children: [Text("10:00")],
-          ),
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Image.network(
-                "https://i.pinimg.com/550x/9c/bc/af/9cbcafccdbd1995937772a047437ceb9.jpg"),
-          ),
+        child: Column(
+          children: [
+            ListTile(
+              title: Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Text(
+                      "Cece Kevin",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "10:00",
+                          style: TextStyle(color: greycolor, fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              subtitle: Column(
+                children: [
+                  Text("Lorem ipsum dolor sit amet, consectetur."),
+                  Divider(
+                    color: greycolor,
+                  )
+                ],
+              ),
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.network(
+                  "http://evillagesite.xyz/storage/public/profiles/1673449854.png",
+                  height: 50,
+                  width: 50,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ],
         ),
       );
     },

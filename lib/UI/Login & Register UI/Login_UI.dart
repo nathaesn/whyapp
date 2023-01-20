@@ -23,6 +23,7 @@ class _LoginUIState extends State<LoginUI> {
 
   //BOOLEAN
   bool ishide = true;
+  bool isload = true;
 
   //Start
   @override
@@ -84,10 +85,36 @@ class _LoginUIState extends State<LoginUI> {
                   child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              return Container(
+                                  padding: EdgeInsets.all(16),
+                                  color: Colors.black.withOpacity(0.8),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Padding(
+                                            child: Container(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        strokeWidth: 3),
+                                                width: 32,
+                                                height: 32),
+                                            padding:
+                                                EdgeInsets.only(bottom: 16)),
+                                      ]));
+                            },
+                          );
                           _formKey.currentState!.save();
 
                           AuthenticationHelper()
-                              .signIn(email: email_controller.text, password: password_controller.text)
+                              .signIn(
+                                  email: email_controller.text,
+                                  password: password_controller.text)
                               .then((ok) {
                             if (ok == null) {
                               Navigator.pushReplacement(
@@ -95,7 +122,8 @@ class _LoginUIState extends State<LoginUI> {
                                   MaterialPageRoute(
                                       builder: (context) => HomeScreenUI()));
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
                                 content: Text(
                                   ok,
                                   style: TextStyle(fontSize: 16),
@@ -128,20 +156,20 @@ class _LoginUIState extends State<LoginUI> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                        Container(
-                          width: 80,
-                          color: greycolor,
-                          height: 1,
-                        ),
-                        Text(
-                          " Masuk Dengan ",
-                          style: TextStyle(color: greycolor),
-                        ),
-                        Container(
-                          width: 80,
-                          color: greycolor,
-                          height: 1,
-                        ),
+                      Container(
+                        width: 80,
+                        color: greycolor,
+                        height: 1,
+                      ),
+                      Text(
+                        " Masuk Dengan ",
+                        style: TextStyle(color: greycolor),
+                      ),
+                      Container(
+                        width: 80,
+                        color: greycolor,
+                        height: 1,
+                      ),
                     ],
                   ),
                 ),
@@ -152,7 +180,6 @@ class _LoginUIState extends State<LoginUI> {
                   width: double.infinity,
                   height: 54,
                   child: ElevatedButton(
-                    
                       onPressed: () {},
                       // ignore: sort_child_properties_last
                       child: Row(
