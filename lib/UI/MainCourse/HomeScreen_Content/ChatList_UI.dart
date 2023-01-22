@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:whyapp/Theme.dart';
 
@@ -32,6 +33,22 @@ Widget listchat() {
         child: Column(
           children: [
             ListTile(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                      title: Text("TES"),
+                      content:
+                          Text("TESting jkaslkdjalksdjaldjakldjlkajiodusoiu"),
+                      actions: [
+                        TextButton(onPressed: () {}, child: Text("ok")),
+                        TextButton(onPressed: () {}, child: Text("ok"))
+                      ],
+                    );
+                  },
+                );
+              },
               title: Row(
                 children: [
                   Expanded(

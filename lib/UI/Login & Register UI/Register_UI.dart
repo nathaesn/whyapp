@@ -25,11 +25,11 @@ class _RegisterUIState extends State<RegisterUI> {
   //Boolean
   bool ishide = true;
 
-
   //Start
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: primarycolor,
       body: SafeArea(
           child: ListView(
@@ -76,7 +76,9 @@ class _RegisterUIState extends State<RegisterUI> {
                           formkey.currentState!.save();
 
                           AuthenticationHelper()
-                              .signUp(email: email_controller.text, password: password_controller.text)
+                              .signUp(
+                                  email: email_controller.text,
+                                  password: password_controller.text)
                               .then((result) {
                             if (result == null) {
                               Navigator.pushReplacement(
@@ -84,7 +86,8 @@ class _RegisterUIState extends State<RegisterUI> {
                                   MaterialPageRoute(
                                       builder: (context) => HomeScreenUI()));
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
                                 content: Text(
                                   result,
                                   style: TextStyle(fontSize: 16),
