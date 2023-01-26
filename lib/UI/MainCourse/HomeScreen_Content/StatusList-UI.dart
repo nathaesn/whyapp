@@ -10,6 +10,8 @@ class StatusUI extends StatefulWidget {
 }
 
 class _StatusUIState extends State<StatusUI> {
+  bool key = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +25,11 @@ class _StatusUIState extends State<StatusUI> {
           color: Colors.white,
         ),
       ),
-      body: list(),
+      body: key
+          ? Center(
+              child: Text("NODATA"),
+            )
+          : list(),
     );
   }
 

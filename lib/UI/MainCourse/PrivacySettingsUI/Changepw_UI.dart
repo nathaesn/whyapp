@@ -152,7 +152,9 @@ class _ChangePwUIState extends State<ChangePwUI> {
                                         SizedBox(
                                             height: 120,
                                             child: Lottie.asset(
-                                                'Assets/Animation/verify-animation.json')),
+                                              'Assets/Animation/verify-animation.json',
+                                              repeat: false,
+                                            )),
                                         Text(
                                           "Kirim verifikasi reset password ke email anda",
                                           style: TextStyle(

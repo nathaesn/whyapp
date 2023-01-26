@@ -1,9 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:whyapp/Theme.dart';
 
-class ChatList extends StatelessWidget {
+class ChatList extends StatefulWidget {
   const ChatList({Key? key}) : super(key: key);
+
+  @override
+  State<ChatList> createState() => _ChatListState();
+}
+
+class _ChatListState extends State<ChatList> {
+  bool key = true;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +26,38 @@ class ChatList extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      body: listchat(),
+      body: key
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 80,
+                    ),
+                    SizedBox(
+                        height: 250,
+                        width: 250,
+                        child: Lottie.asset(
+                            'Assets/Animation/chat-animation.json',
+                            repeat: false)),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Text(
+                        "Anda belum melakukan chat kepada siapapun",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            )
+          : listchat(),
     );
   }
 }
