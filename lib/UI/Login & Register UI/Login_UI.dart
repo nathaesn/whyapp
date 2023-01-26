@@ -219,7 +219,23 @@ class _LoginUIState extends State<LoginUI> {
               width: double.infinity,
               height: 54,
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    AuthenticationHelper().signInWithGoogle().then((value) {
+                      if (value == null) {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreenUI()));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                            value,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ));
+                      }
+                    });
+                  },
                   // ignore: sort_child_properties_last
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
