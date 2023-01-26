@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:whyapp/Theme.dart';
+import 'package:whyapp/UI/Login%20&%20Register%20UI/Login_UI.dart';
 import 'package:whyapp/UI/MainCourse/BantuanUI/Bantuan_UI.dart';
 import 'package:whyapp/UI/MainCourse/PrivacySettingsUI/Changepw_UI.dart';
 import 'package:whyapp/UI/MainCourse/ProfileUI/EditProfile.dart';
+import 'package:whyapp/firebase/authController.dart';
 
 class ProfileUI extends StatefulWidget {
   ProfileUI({Key? key}) : super(key: key);
@@ -192,7 +194,11 @@ class _ProfileUIState extends State<ProfileUI> {
                               Navigator.pop(context);
                             },
                             child: Text("Tidak")),
-                        TextButton(onPressed: () {}, child: Text("Ya"))
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginUI(),), (route) => false);
+                            }, 
+                            child: Text("Ya")),
                       ],
                     );
                   },
