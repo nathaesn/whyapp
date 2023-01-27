@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -86,10 +87,6 @@ class _LoginUIState extends State<LoginUI> {
               height: 54,
               child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomeScreenUI()));
                     if (_formKey.currentState!.validate()) {
                       showCupertinoDialog(
                         barrierDismissible: false,
@@ -124,7 +121,7 @@ class _LoginUIState extends State<LoginUI> {
                                                         'Assets/Animation/login-anim.json'),
                                                   ),
                                                   Text(
-                                                    "Sedang mendapatkan info login...",
+                                                    "Sedang memproses login...",
                                                     style: GoogleFonts.poppins(
                                                         color: greycolor,
                                                         fontSize: 12,
@@ -155,29 +152,21 @@ class _LoginUIState extends State<LoginUI> {
                                   builder: (context) => HomeScreenUI()));
                         } else {
                           Navigator.pop(context);
-                          showCupertinoDialog(
-                            context: context,
-                            builder: (context) {
-                              return CupertinoAlertDialog(
-                                title: Text("Login Gagal"),
-                                content: Text(
-                                    "Mohon maaf sedang terjadi kesalahan sistem, mohon coba kembali"),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("OKE"))
-                                ],
-                              );
-                            },
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                              ok,
-                              style: TextStyle(fontSize: 16),
+                          FocusScopeNode currentFocus = FocusScope.of(context);
+                          final snackBar = SnackBar(
+                            elevation: 0,
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.transparent,
+                            content: AwesomeSnackbarContent(
+                              title: 'Login Gagal',
+                              message: ok,
+                              contentType: ContentType.failure,
                             ),
-                          ));
+                          );
+
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(snackBar);
                         }
                       });
                     }
@@ -220,6 +209,54 @@ class _LoginUIState extends State<LoginUI> {
               height: 54,
               child: ElevatedButton(
                   onPressed: () {
+                    showCupertinoDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) {
+                        return Container(
+                            padding: EdgeInsets.all(16),
+                            color: Colors.black.withOpacity(0.8),
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Padding(
+                                      child: BackdropFilter(
+                                        filter: ImageFilter.blur(
+                                            sigmaX: 10.0, sigmaY: 10.0),
+                                        child: Container(
+                                            padding: EdgeInsets.all(20),
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            decoration: BoxDecoration(
+                                                color: Color.fromARGB(
+                                                    223, 255, 255, 255),
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 140,
+                                                  child: Lottie.asset(
+                                                      'Assets/Animation/login-anim.json'),
+                                                ),
+                                                Text(
+                                                  "Sedang memproses login...",
+                                                  style: GoogleFonts.poppins(
+                                                      color: greycolor,
+                                                      fontSize: 12,
+                                                      decoration:
+                                                          TextDecoration.none),
+                                                )
+                                              ],
+                                            ),
+                                            width: double.infinity,
+                                            height: 215),
+                                      ),
+                                      padding: EdgeInsets.only(bottom: 16)),
+                                ]));
+                      },
+                    );
                     AuthenticationHelper().signInWithGoogle().then((value) {
                       if (value == null) {
                         Navigator.pushReplacement(
@@ -227,12 +264,20 @@ class _LoginUIState extends State<LoginUI> {
                             MaterialPageRoute(
                                 builder: (context) => HomeScreenUI()));
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                            value,
-                            style: TextStyle(fontSize: 16),
+                        Navigator.pop(context);
+                        final snackBar = SnackBar(
+                          /// need to set following properties for best effect of awesome_snackbar_content
+                          elevation: 0,
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor: Colors.transparent,
+                          content: AwesomeSnackbarContent(
+                            title: 'Login Gagal',
+                            message: value,
+
+                            /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                            contentType: ContentType.failure,
                           ),
-                        ));
+                        );
                       }
                     });
                   },
