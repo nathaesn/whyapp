@@ -39,17 +39,17 @@ class _BantuanUIState extends State<BantuanUI> {
             height: 20,
           ),
           text(
-              head: "Tentang aplikasi",
+              head: "Tentang aplikasi WhyApp",
               body:
-                  'Aplikasi ini adalah aplikasi yang dipergunakan untuk desa menjadi mandi dan modern.'),
+                  'WhyApp adalah aplikasi pesan instan yang digunakan untuk berkomunikasi dengan orang lain.'),
           text(
               head: "Fitur - fitur aplikasi",
               body:
-                  'Aplikasi ini adalah aplikasi yang dipergunakan untuk desa menjadi mandi dan modern.'),
+                  'WhyApp dapat mengirimkan pesan dan mempublish sebuah status baik itu gambar ataupun teks agar semua pengguna dapat melihatnya.'),
           text(
-              head: "Cara menggunakan aplikasi",
+              head: "Dimana bisa mendownload aplikasi ini?",
               body:
-                  'Aplikasi ini adalah aplikasi yang dipergunakan untuk desa menjadi mandi dan modern.'),
+                  'WhyApp bisa Anda unduh di aplikasi Play Store. Di setiap smartphone android terbaru secara default tersedia aplikasi toko yang namanya Play Store.'),
         ],
       ),
     );

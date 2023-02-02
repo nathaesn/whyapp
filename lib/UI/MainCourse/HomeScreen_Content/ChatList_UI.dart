@@ -38,10 +38,10 @@ class _ChatListState extends State<ChatList> {
                     ),
                     SizedBox(
                         height: 250,
-                        width: 250,
+                        width: 350,
                         child: Lottie.asset(
-                            'Assets/Animation/chat-animation.json',
-                            repeat: false)),
+                            'Assets/Animation/chat-home.json',
+                            repeat: true)),
                     SizedBox(
                       height: 20,
                     ),
@@ -81,8 +81,16 @@ Widget listchat() {
                       content:
                           Text("TESting jkaslkdjalksdjaldjakldjlkajiodusoiu"),
                       actions: [
-                        TextButton(onPressed: () {}, child: Text("ok")),
-                        TextButton(onPressed: () {}, child: Text("ok"))
+                        TextButton(onPressed: (
+
+                        ) {
+
+                        }, child: Text("ok")),
+                        TextButton(onPressed: (
+
+                        ) {
+
+                        }, child: Text("ok"))
                       ],
                     );
                   },
