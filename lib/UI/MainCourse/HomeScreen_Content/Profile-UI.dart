@@ -196,8 +196,14 @@ class _ProfileUIState extends State<ProfileUI> {
                             child: Text("Tidak")),
                         TextButton(
                             onPressed: () {
-                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginUI(),), (route) => false);
-                            }, 
+                              AuthenticationHelper().signOut();
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginUI(),
+                                  ),
+                                  (route) => false);
+                            },
                             child: Text("Ya")),
                       ],
                     );

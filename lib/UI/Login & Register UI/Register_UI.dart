@@ -1,5 +1,10 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:whyapp/Theme.dart';
 import 'package:whyapp/UI/Login%20&%20Register%20UI/Login_UI.dart';
 import 'package:whyapp/UI/MainCourse/HomeScreen_UI.dart';
@@ -75,17 +80,137 @@ class _RegisterUIState extends State<RegisterUI> {
                         if (formkey.currentState!.validate()) {
                           formkey.currentState!.save();
 
+                          showCupertinoDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              return Container(
+                                  padding: EdgeInsets.all(16),
+                                  color: Colors.black.withOpacity(0.8),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Padding(
+                                            child: BackdropFilter(
+                                              filter: ImageFilter.blur(
+                                                  sigmaX: 10.0, sigmaY: 10.0),
+                                              child: Container(
+                                                  padding: EdgeInsets.all(20),
+                                                  margin: EdgeInsets.symmetric(
+                                                      horizontal: 20),
+                                                  decoration: BoxDecoration(
+                                                      color: Color.fromARGB(
+                                                          223, 255, 255, 255),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 140,
+                                                        child: Lottie.asset(
+                                                            'Assets/Animation/login-anim.json'),
+                                                      ),
+                                                      Text(
+                                                        "Sedang memproses login...",
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color:
+                                                                    greycolor,
+                                                                fontSize: 12,
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .none),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  width: double.infinity,
+                                                  height: 215),
+                                            ),
+                                            padding:
+                                                EdgeInsets.only(bottom: 16)),
+                                      ]));
+                            },
+                          );
+
                           AuthenticationHelper()
                               .signUp(
                                   email: email_controller.text,
                                   password: password_controller.text)
                               .then((result) {
                             if (result == null) {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HomeScreenUI()));
+                              Navigator.pop(context);
+                              showCupertinoDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) {
+                                  return Container(
+                                      padding: EdgeInsets.all(16),
+                                      color: Colors.black.withOpacity(0.8),
+                                      child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Padding(
+                                                child: BackdropFilter(
+                                                  filter: ImageFilter.blur(
+                                                      sigmaX: 10.0,
+                                                      sigmaY: 10.0),
+                                                  child: Container(
+                                                      padding:
+                                                          EdgeInsets.all(20),
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 20),
+                                                      decoration: BoxDecoration(
+                                                          color: Color.fromARGB(
+                                                              223,
+                                                              255,
+                                                              255,
+                                                              255),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      20)),
+                                                      child: Column(
+                                                        children: [
+                                                          SizedBox(
+                                                            height: 140,
+                                                            child: Lottie.asset(
+                                                                repeat: false,
+                                                                'Assets/Animation/Sucess-blue-animation.json'),
+                                                          ),
+                                                          Text(
+                                                            "Berhasil Login...",
+                                                            style: GoogleFonts.poppins(
+                                                                color:
+                                                                    greycolor,
+                                                                fontSize: 12,
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .none),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      width: double.infinity,
+                                                      height: 215),
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                    bottom: 16)),
+                                          ]));
+                                },
+                              );
+                              Future.delayed(const Duration(seconds: 2), () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeScreenUI()));
+                              });
                             } else {
+                              Navigator.pop(context);
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
                                 content: Text(

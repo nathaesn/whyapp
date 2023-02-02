@@ -146,10 +146,68 @@ class _LoginUIState extends State<LoginUI> {
                               password: password_controller.text)
                           .then((ok) {
                         if (ok == null) {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreenUI()));
+                          Navigator.pop(context);
+                          showCupertinoDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              return Container(
+                                  padding: EdgeInsets.all(16),
+                                  color: Colors.black.withOpacity(0.8),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Padding(
+                                            child: BackdropFilter(
+                                              filter: ImageFilter.blur(
+                                                  sigmaX: 10.0, sigmaY: 10.0),
+                                              child: Container(
+                                                  padding: EdgeInsets.all(20),
+                                                  margin: EdgeInsets.symmetric(
+                                                      horizontal: 20),
+                                                  decoration: BoxDecoration(
+                                                      color: Color.fromARGB(
+                                                          223, 255, 255, 255),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 140,
+                                                        child: Lottie.asset(
+                                                            repeat: false,
+                                                            'Assets/Animation/Sucess-blue-animation.json'),
+                                                      ),
+                                                      Text(
+                                                        "Berhasil Login...",
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color:
+                                                                    greycolor,
+                                                                fontSize: 12,
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .none),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  width: double.infinity,
+                                                  height: 215),
+                                            ),
+                                            padding:
+                                                EdgeInsets.only(bottom: 16)),
+                                      ]));
+                            },
+                          );
+                          Future.delayed(const Duration(seconds: 3), () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreenUI()));
+                          });
                         } else {
                           Navigator.pop(context);
                           FocusScopeNode currentFocus = FocusScope.of(context);
