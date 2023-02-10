@@ -1,20 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '';
 
 class AuthenticationHelper {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   get user => _auth.currentUser;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  //Register
+  Future<String?> editusername({required String name}) async {
+    await user!.updateDisplayName(name);
+  }
 
   //Register
   Future<String?> signUp(
-      {required String email, required String password}) async {
+      {required String email,
+      required String password,
+      required String name}) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      final Userdata = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      await Userdata.user!.updateDisplayName(name);
+
       return null;
     } on FirebaseAuthException catch (e) {
       return e.message;
@@ -25,6 +37,7 @@ class AuthenticationHelper {
   Future signIn({required String email, required String password}) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+
       return null;
     } on FirebaseAuthException catch (e) {
       return e.message;
@@ -53,4 +66,15 @@ class AuthenticationHelper {
   Future signOut() async {
     await FirebaseAuth.instance.signOut();
   }
+
+  //VerifyEmail
+  Future sendverify() async {
+    final verifyemailsend = await user?.sendEmailVerification();
+    // CollectionReference users = await firestore.collection('users');
+    // // users.add({});
+    // await users.doc(user!.email).set({"username": user!.displayName});
+  }
 }
+
+
+///https://firebase.flutter.dev/docs/firestore/usage/

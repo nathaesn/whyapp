@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -16,6 +17,8 @@ class ProfileUI extends StatefulWidget {
 }
 
 class _ProfileUIState extends State<ProfileUI> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,12 +44,12 @@ class _ProfileUIState extends State<ProfileUI> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Username",
+                          auth.currentUser!.displayName.toString(),
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                         Text(
-                          "email@gmail.com",
+                          auth.currentUser!.email.toString(),
                           style: TextStyle(
                               color: greycolor,
                               fontSize: 12,

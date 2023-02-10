@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:whyapp/Theme.dart';
+import 'package:whyapp/UI/MainCourse/HomeScreen_UI.dart';
+import 'package:whyapp/firebase/authController.dart';
 
 class EditProfileUI extends StatefulWidget {
   EditProfileUI({Key? key}) : super(key: key);
@@ -9,6 +12,18 @@ class EditProfileUI extends StatefulWidget {
 }
 
 class _EditProfileUIState extends State<EditProfileUI> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  //Controller
+  TextEditingController name = TextEditingController();
+
+  @override
+  void initState() {
+    name.text = auth.currentUser!.displayName.toString();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,9 +37,9 @@ class _EditProfileUIState extends State<EditProfileUI> {
       body: Column(
         children: [
           Container(
-            
             decoration: BoxDecoration(
-              color: secondarycolor,),
+              color: secondarycolor,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -47,35 +62,49 @@ class _EditProfileUIState extends State<EditProfileUI> {
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 20),
-            child: TextFormField(
-              decoration: InputDecoration(
-                labelText: "Nama",
-                labelStyle: TextStyle(color: surfacecolor),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: surfacecolor),
+            child: Form(
+              child: TextFormField(
+                controller: name,
+                decoration: InputDecoration(
+                  labelText: "Nama",
+                  labelStyle: TextStyle(color: surfacecolor),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: surfacecolor),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: surfacecolor),
+                  ),
                 ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: surfacecolor),
-                ),
+                style: TextStyle(color: surfacecolor),
               ),
-              style: TextStyle(color: surfacecolor),
             ),
           ),
           Spacer(),
           SizedBox(
             height: 50,
             width: 203,
-            child: ElevatedButton(onPressed: (){}, 
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                primary: secondarycolor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)
-                )
-              ),
-            child: Text ("Simpan")),
+            child: ElevatedButton(
+                onPressed: () {
+                  AuthenticationHelper()
+                      .editusername(name: name.text)
+                      .toString();
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeScreenUI(),
+                      ),
+                      (route) => false);
+                },
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    primary: secondarycolor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                child: Text("Simpan")),
           ),
-          Spacer()
+          SizedBox(
+            height: 70,
+          )
         ],
       ),
     );

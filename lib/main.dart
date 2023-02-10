@@ -3,7 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:whyapp/Theme.dart';
+import 'package:whyapp/UI/Login%20&%20Register%20UI/Emailverify.dart';
 import 'package:whyapp/UI/Login%20&%20Register%20UI/Login_UI.dart';
+import 'package:whyapp/UI/Login%20&%20Register%20UI/Register_UI.dart';
 import 'package:whyapp/UI/MainCourse/HomeScreen_UI.dart';
 
 Future main() async {
@@ -21,6 +23,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool islogin = false;
+  bool isverify = false;
 
   void login() async {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
@@ -31,6 +34,11 @@ class _MyAppState extends State<MyApp> {
       } else {
         setState(() {
           islogin = true;
+          if (user.emailVerified == true) {
+            isverify = true;
+          } else {
+            isverify = false;
+          }
         });
       }
     });
@@ -51,7 +59,11 @@ class _MyAppState extends State<MyApp> {
         textTheme: GoogleFonts.poppinsTextTheme(),
         primarySwatch: themecolor,
       ),
-      home: islogin ? HomeScreenUI() : LoginUI(),
+      home: islogin
+          ? isverify
+              ? HomeScreenUI()
+              : VerifyEmailUI()
+          : LoginUI(),
     );
   }
 }

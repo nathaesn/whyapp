@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:whyapp/Theme.dart';
+import 'package:whyapp/UI/Login%20&%20Register%20UI/Emailverify.dart';
 import 'package:whyapp/UI/Login%20&%20Register%20UI/Login_UI.dart';
 import 'package:whyapp/UI/MainCourse/HomeScreen_UI.dart';
 
@@ -137,6 +138,7 @@ class _RegisterUIState extends State<RegisterUI> {
 
                           AuthenticationHelper()
                               .signUp(
+                                  name: username_controller.text,
                                   email: email_controller.text,
                                   password: password_controller.text)
                               .then((result) {
@@ -207,7 +209,7 @@ class _RegisterUIState extends State<RegisterUI> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => HomeScreenUI()));
+                                        builder: (context) => VerifyEmailUI()));
                               });
                             } else {
                               Navigator.pop(context);
