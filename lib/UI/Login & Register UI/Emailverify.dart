@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:whyapp/Theme.dart';
 import 'package:whyapp/UI/Login%20&%20Register%20UI/Login_UI.dart';
+import 'package:whyapp/UI/MainCourse/HomeScreen_UI.dart';
 import 'package:whyapp/firebase/authController.dart';
 
 class VerifyEmailUI extends StatefulWidget {
@@ -108,7 +109,44 @@ class _VerifyEmailUIState extends State<VerifyEmailUI> {
                                   },
                                   child: Text("Kirim ulang")),
                               TextButton(
-                                  onPressed: () {}, child: Text("Lanjutkan")),
+                                  onPressed: () {
+                                    if (auth.currentUser!.emailVerified ==
+                                        true) {
+                                      final inputdata = AuthenticationHelper()
+                                          .inputDataUser();
+                                      if (inputdata != null) {
+                                        Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomeScreenUI(),
+                                            ),
+                                            (route) => false);
+                                      } else {
+                                        Navigator.pop(context);
+                                      }
+                                    } else {
+                                      Navigator.pop(context);
+                                      showCupertinoDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return CupertinoAlertDialog(
+                                            title: Text("Gagal untuk masuk"),
+                                            content: Text(
+                                                "Sepertinya anda belum memverifikasi email anda, mohon verifikasi email anda terlebih dahulu"),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text("Ya"))
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                  },
+                                  child: Text("Lanjutkan")),
                             ],
                           );
                         },

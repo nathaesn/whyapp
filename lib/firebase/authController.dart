@@ -8,6 +8,7 @@ class AuthenticationHelper {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   get user => _auth.currentUser;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   //Register
   Future<String?> editusername({required String name}) async {
@@ -70,9 +71,16 @@ class AuthenticationHelper {
   //VerifyEmail
   Future sendverify() async {
     final verifyemailsend = await user?.sendEmailVerification();
-    // CollectionReference users = await firestore.collection('users');
-    // // users.add({});
-    // await users.doc(user!.email).set({"username": user!.displayName});
+  }
+
+  Future inputDataUser() async {
+    // users.add({});
+    CollectionReference users = await firestore.collection('user');
+    await users.doc(auth.currentUser!.email).set({
+      "username": auth.currentUser!.displayName,
+      "image": auth.currentUser!.photoURL,
+      "status": "",
+    });
   }
 }
 
