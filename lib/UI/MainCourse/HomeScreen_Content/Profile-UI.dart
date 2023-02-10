@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +46,7 @@ class _ProfileUIState extends State<ProfileUI> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          auth.currentUser!.displayName.toString(),
+                          auth.currentUser!.emailVerified.toString(),
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),

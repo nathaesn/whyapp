@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,41 @@ class VerifyEmailUI extends StatefulWidget {
 
 class _VerifyEmailUIState extends State<VerifyEmailUI> {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  bool isEmailVerified = false;
+  Timer? timer;
+  @override
+  void initState() {
+    super.initState();
+    timer =
+        Timer.periodic(const Duration(seconds: 3), (_) => checkEmailVerified());
+  }
+
+  checkEmailVerified() async {
+    await FirebaseAuth.instance.currentUser?.reload();
+
+    setState(() {
+      isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+    });
+
+    if (isEmailVerified) {
+      AuthenticationHelper().inputDataUser();
+
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeScreenUI(),
+          ),
+          (route) => false);
+
+      timer?.cancel();
+    }
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,54 +136,15 @@ class _VerifyEmailUIState extends State<VerifyEmailUI> {
                         context: context,
                         builder: (context) {
                           return CupertinoAlertDialog(
-                            content: Text("Email verifikasi telah dikirim ke " +
-                                auth.currentUser!.email.toString() +
-                                " silahkan verifikasi email anda digmail anda, lalu klik lanjutkan"),
+                            content: Text(
+                                "Sedang menunggu verifikasi email, silahkan verifikasi email anda ke " +
+                                    auth.currentUser!.email.toString()),
                             actions: [
                               TextButton(
                                   onPressed: () {
                                     AuthenticationHelper().sendverify();
                                   },
                                   child: Text("Kirim ulang")),
-                              TextButton(
-                                  onPressed: () {
-                                    if (auth.currentUser!.emailVerified ==
-                                        true) {
-                                      final inputdata = AuthenticationHelper()
-                                          .inputDataUser();
-                                      if (inputdata != null) {
-                                        Navigator.pushAndRemoveUntil(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  HomeScreenUI(),
-                                            ),
-                                            (route) => false);
-                                      } else {
-                                        Navigator.pop(context);
-                                      }
-                                    } else {
-                                      Navigator.pop(context);
-                                      showCupertinoDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return CupertinoAlertDialog(
-                                            title: Text("Gagal untuk masuk"),
-                                            content: Text(
-                                                "Sepertinya anda belum memverifikasi email anda, mohon verifikasi email anda terlebih dahulu"),
-                                            actions: [
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Text("Ya"))
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
-                                  },
-                                  child: Text("Lanjutkan")),
                             ],
                           );
                         },

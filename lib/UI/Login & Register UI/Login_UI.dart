@@ -210,7 +210,6 @@ class _LoginUIState extends State<LoginUI> {
                           });
                         } else {
                           Navigator.pop(context);
-                          FocusScopeNode currentFocus = FocusScope.of(context);
                           final snackBar = SnackBar(
                             elevation: 0,
                             behavior: SnackBarBehavior.floating,
@@ -323,7 +322,7 @@ class _LoginUIState extends State<LoginUI> {
                                 builder: (context) => HomeScreenUI()));
                       } else {
                         Navigator.pop(context);
-                        final snackBar = SnackBar(
+                        SnackBar(
                           /// need to set following properties for best effect of awesome_snackbar_content
                           elevation: 0,
                           behavior: SnackBarBehavior.floating,

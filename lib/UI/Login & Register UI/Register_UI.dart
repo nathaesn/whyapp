@@ -8,7 +8,6 @@ import 'package:lottie/lottie.dart';
 import 'package:whyapp/Theme.dart';
 import 'package:whyapp/UI/Login%20&%20Register%20UI/Emailverify.dart';
 import 'package:whyapp/UI/Login%20&%20Register%20UI/Login_UI.dart';
-import 'package:whyapp/UI/MainCourse/HomeScreen_UI.dart';
 
 import '../../firebase/authController.dart';
 
