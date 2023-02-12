@@ -76,6 +76,8 @@ class AuthenticationHelper {
     CollectionReference users = await firestore.collection('user');
     await users.doc(auth.currentUser!.email).set({
       "username": auth.currentUser!.displayName,
+      "uid": auth.currentUser!.uid,
+      "email": auth.currentUser!.email,
       "image": auth.currentUser!.photoURL,
       "status": "",
     });

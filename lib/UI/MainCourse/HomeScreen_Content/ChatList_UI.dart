@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:whyapp/Theme.dart';
+import 'package:whyapp/UI/MainCourse/ListUser/ListUser_UI.dart';
 
 class ChatList extends StatefulWidget {
   const ChatList({Key? key}) : super(key: key);
@@ -16,14 +17,19 @@ class _ChatListState extends State<ChatList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Container(
-        width: 50,
-        decoration: BoxDecoration(
-            color: secondarycolor, borderRadius: BorderRadius.circular(10)),
-        height: 50,
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
+      floatingActionButton: InkWell(
+        onTap: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ListUserUI(),));
+        },
+        child: Container(
+          width: 50,
+          decoration: BoxDecoration(
+              color: secondarycolor, borderRadius: BorderRadius.circular(10)),
+          height: 50,
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
         ),
       ),
       body: key
@@ -39,8 +45,7 @@ class _ChatListState extends State<ChatList> {
                     SizedBox(
                         height: 250,
                         width: 350,
-                        child: Lottie.asset(
-                            'Assets/Animation/chat-home.json',
+                        child: Lottie.asset('Assets/Animation/chat-home.json',
                             repeat: true)),
                     SizedBox(
                       height: 20,
@@ -81,16 +86,8 @@ Widget listchat() {
                       content:
                           Text("TESting jkaslkdjalksdjaldjakldjlkajiodusoiu"),
                       actions: [
-                        TextButton(onPressed: (
-
-                        ) {
-
-                        }, child: Text("ok")),
-                        TextButton(onPressed: (
-
-                        ) {
-
-                        }, child: Text("ok"))
+                        TextButton(onPressed: () {}, child: Text("ok")),
+                        TextButton(onPressed: () {}, child: Text("ok"))
                       ],
                     );
                   },

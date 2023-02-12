@@ -1,5 +1,6 @@
 // ignore_for_file: unused_local_variable
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,30 @@ class ProfileUI extends StatefulWidget {
 
 class _ProfileUIState extends State<ProfileUI> {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  var userPhotos;
+  var username;
+  bool isload = true;
+
+  Future<void> getData() async {
+    //query the user photo
+    await FirebaseFirestore.instance
+        .collection("user")
+        .doc(auth.currentUser!.email)
+        .snapshots()
+        .listen((event) {
+      setState(() {
+        username = event.get("username");
+        isload = false;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    getData();
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +71,7 @@ class _ProfileUIState extends State<ProfileUI> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          auth.currentUser!.emailVerified.toString(),
+                          username ?? "...",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
