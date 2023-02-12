@@ -20,7 +20,6 @@ class _EditProfileUIState extends State<EditProfileUI> {
   @override
   void initState() {
     name.text = auth.currentUser!.displayName.toString();
-    // TODO: implement initState
     super.initState();
   }
 

@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationHelper {
@@ -11,7 +9,7 @@ class AuthenticationHelper {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   //Register
-  Future<String?> editusername({required String name}) async {
+  Future editusername({required String name}) async {
     await user!.updateDisplayName(name);
   }
 
@@ -70,7 +68,7 @@ class AuthenticationHelper {
 
   //VerifyEmail
   Future sendverify() async {
-    final verifyemailsend = await user?.sendEmailVerification();
+    await user?.sendEmailVerification();
   }
 
   Future inputDataUser() async {

@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:whyapp/Theme.dart';
 import 'package:whyapp/UI/Login%20&%20Register%20UI/Emailverify.dart';
 import 'package:whyapp/UI/Login%20&%20Register%20UI/Login_UI.dart';
-import 'package:whyapp/UI/Login%20&%20Register%20UI/Register_UI.dart';
 import 'package:whyapp/UI/MainCourse/HomeScreen_UI.dart';
 
 Future main() async {
@@ -47,7 +46,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     login();
-    // TODO: implement initState
     super.initState();
   }
 
