@@ -1,8 +1,12 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:whyapp/Theme.dart';
+import 'package:whyapp/UI/MainCourse/Chat/ImageEditor.dart';
 
 class ChatUI extends StatefulWidget {
   ChatUI({Key? key, required this.email}) : super(key: key);
@@ -13,6 +17,7 @@ class ChatUI extends StatefulWidget {
 }
 
 class _ChatUIState extends State<ChatUI> {
+  //Variable
   TextEditingController message = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -23,12 +28,12 @@ class _ChatUIState extends State<ChatUI> {
 
   String? chatId;
 
+  //GetUser
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   //Scroll to end
   final ScrollController _controllerscroll = ScrollController();
 
-// This is what you're looking for!
   void scrollDown() {
     _controllerscroll.animateTo(
       _controllerscroll.position.minScrollExtent,
@@ -37,8 +42,8 @@ class _ChatUIState extends State<ChatUI> {
     );
   }
 
+  //GetSecondUser
   Future<void> getData() async {
-    //query the user photo
     await FirebaseFirestore.instance
         .collection("user")
         .doc(widget.email)
@@ -59,6 +64,62 @@ class _ChatUIState extends State<ChatUI> {
     });
   }
 
+  //PickImage
+
+  File? imageFile;
+
+  final picker = ImagePicker();
+
+  void imageAction() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ImageActionUI(imageFile: imageFile),
+        ));
+  }
+
+  Future pickImage() async {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return CupertinoActionSheet(
+          actions: [
+            CupertinoActionSheetAction(
+                onPressed: () async {
+                  final pickedFile =
+                      await picker.getImage(source: ImageSource.gallery);
+                  if (pickedFile != null) {
+                    setState(() {
+                      imageFile = File(pickedFile.path);
+                    });
+                    imageAction();
+                  }
+                },
+                child: Text(
+                  "Gallery",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                )),
+            CupertinoActionSheetAction(
+                onPressed: () async {
+                  final pickedFile =
+                      await picker.getImage(source: ImageSource.camera);
+                  if (pickedFile != null) {
+                    setState(() {
+                      imageFile = File(pickedFile.path);
+                    });
+                    imageAction();
+                  }
+                },
+                child: Text("Camera",
+                    style:
+                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold)))
+          ],
+        );
+      },
+    );
+  }
+
+  //Message Send
   void onSendMessage() {
     var documentReference = FirebaseFirestore.instance
         .collection('messages')
@@ -75,6 +136,7 @@ class _ChatUIState extends State<ChatUI> {
           'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
           'date': DateTime.now().toString(),
           'content': message.text,
+          'image': "",
         },
       );
 
@@ -89,7 +151,6 @@ class _ChatUIState extends State<ChatUI> {
   @override
   void initState() {
     getData();
-
     super.initState();
   }
 
@@ -116,9 +177,14 @@ class _ChatUIState extends State<ChatUI> {
                   ),
                   isDense: true,
                   hintText: "Pesan...",
-                  prefixIcon: Icon(
-                    Icons.image,
-                    size: 20,
+                  prefixIcon: InkWell(
+                    onTap: () {
+                      pickImage();
+                    },
+                    child: Icon(
+                      Icons.image,
+                      size: 20,
+                    ),
                   ),
                   suffixIcon: InkWell(
                     onTap: () {
