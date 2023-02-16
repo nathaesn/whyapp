@@ -74,7 +74,8 @@ class _ChatUIState extends State<ChatUI> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ImageActionUI(imageFile: imageFile),
+          builder: (context) => ImageActionUI(
+            imageFile: imageFile, chatId: chatId, idUser: auth.currentUser!.uid, uidseconduser: uidseconduser,),
         ));
   }
 

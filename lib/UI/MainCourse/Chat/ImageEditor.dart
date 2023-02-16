@@ -1,12 +1,16 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:zoom_widget/zoom_widget.dart';
 
 class ImageActionUI extends StatefulWidget {
-  ImageActionUI({Key? key, required this.imageFile}) : super(key: key);
+  ImageActionUI({Key? key, required this.imageFile, required this.chatId, required this.idUser, required this.uidseconduser}) : super(key: key);
   File? imageFile;
+  String? chatId;
+  String? uidseconduser;
+  String? idUser;
 
   @override
   State<ImageActionUI> createState() => _ImageActionUIState();
@@ -25,9 +29,32 @@ class _ImageActionUIState extends State<ImageActionUI> {
         .putFile(imagesPath);
     var downloadUrl = await snapshot.ref.getDownloadURL();
     print(downloadUrl);
-    setState(() {
-      // imageUrl = downloadUrl;
+    void onSendMessage() {
+    var documentReference = FirebaseFirestore.instance
+        .collection('messages')
+        .doc(widget.chatId.toString())
+        .collection(widget.chatId.toString())
+        .doc(DateTime.now().millisecondsSinceEpoch.toString());
+
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      final sendmessage = await transaction.set(
+        documentReference,
+        {
+          'idFirstUser': widget.idUser,
+          'idSecondUser': widget.uidseconduser,
+          'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
+          'date': DateTime.now().toString(),
+          'content': message.text,
+          'image': "",
+        },
+      );
+
+      if (sendmessage != null) {
+        message.clear();
+        Navigator.pop(context);
+      }
     });
+  }
   }
 
   @override
@@ -71,8 +98,9 @@ class _ImageActionUIState extends State<ImageActionUI> {
                     hintStyle: TextStyle(color: Colors.white),
                     suffixIcon: InkWell(
                       onTap: () {
-                        sendMessage();
-                        if (_formKey.currentState!.validate()) {}
+                        if (_formKey.currentState!.validate()) {
+                          sendMessage();
+                        }
                       },
                       child: Container(
                           decoration: BoxDecoration(
@@ -102,4 +130,4 @@ class _ImageActionUIState extends State<ImageActionUI> {
           ),
         ));
   }
-}
+ }
