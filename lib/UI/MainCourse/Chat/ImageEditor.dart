@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:zoom_widget/zoom_widget.dart';
 
@@ -14,6 +15,20 @@ class ImageActionUI extends StatefulWidget {
 class _ImageActionUIState extends State<ImageActionUI> {
   TextEditingController message = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _firebaseStorage = FirebaseStorage.instance;
+
+  void sendMessage() async {
+    var imagesPath = File(widget.imageFile!.path);
+    var snapshot = await _firebaseStorage
+        .ref()
+        .child('images/imageName')
+        .putFile(imagesPath);
+    var downloadUrl = await snapshot.ref.getDownloadURL();
+    print(downloadUrl);
+    setState(() {
+      // imageUrl = downloadUrl;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +71,7 @@ class _ImageActionUIState extends State<ImageActionUI> {
                     hintStyle: TextStyle(color: Colors.white),
                     suffixIcon: InkWell(
                       onTap: () {
+                        sendMessage();
                         if (_formKey.currentState!.validate()) {}
                       },
                       child: Container(
