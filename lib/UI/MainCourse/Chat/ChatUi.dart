@@ -75,7 +75,11 @@ class _ChatUIState extends State<ChatUI> {
         context,
         MaterialPageRoute(
           builder: (context) => ImageActionUI(
-            imageFile: imageFile, chatId: chatId, idUser: auth.currentUser!.uid, uidseconduser: uidseconduser,),
+            imageFile: imageFile,
+            chatId: chatId,
+            idUser: auth.currentUser!.uid,
+            uidseconduser: uidseconduser,
+          ),
         ));
   }
 
@@ -267,8 +271,20 @@ class _ChatUIState extends State<ChatUI> {
                                         maxWidth:
                                             MediaQuery.of(context).size.width *
                                                 0.65),
-                                    child: Text(
-                                      snapshot.data!.docs[index].get('content'),
+                                    child: Column(
+                                      children: [
+                                        Visibility(
+                                            visible: snapshot.data!.docs[index]
+                                                    .get('image') !=
+                                                "",
+                                            child: Image.network(snapshot
+                                                .data!.docs[index]
+                                                .get('image'))),
+                                        Text(
+                                          snapshot.data!.docs[index]
+                                              .get('content'),
+                                        ),
+                                      ],
                                     ),
                                   )
                                 ],

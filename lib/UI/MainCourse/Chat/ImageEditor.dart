@@ -6,7 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:zoom_widget/zoom_widget.dart';
 
 class ImageActionUI extends StatefulWidget {
-  ImageActionUI({Key? key, required this.imageFile, required this.chatId, required this.idUser, required this.uidseconduser}) : super(key: key);
+  ImageActionUI(
+      {Key? key,
+      required this.imageFile,
+      required this.chatId,
+      required this.idUser,
+      required this.uidseconduser})
+      : super(key: key);
   File? imageFile;
   String? chatId;
   String? uidseconduser;
@@ -28,8 +34,6 @@ class _ImageActionUIState extends State<ImageActionUI> {
         .child('images/imageName')
         .putFile(imagesPath);
     var downloadUrl = await snapshot.ref.getDownloadURL();
-    print(downloadUrl);
-    void onSendMessage() {
     var documentReference = FirebaseFirestore.instance
         .collection('messages')
         .doc(widget.chatId.toString())
@@ -45,7 +49,7 @@ class _ImageActionUIState extends State<ImageActionUI> {
           'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
           'date': DateTime.now().toString(),
           'content': message.text,
-          'image': "",
+          'image': downloadUrl,
         },
       );
 
@@ -54,7 +58,6 @@ class _ImageActionUIState extends State<ImageActionUI> {
         Navigator.pop(context);
       }
     });
-  }
   }
 
   @override
@@ -130,4 +133,4 @@ class _ImageActionUIState extends State<ImageActionUI> {
           ),
         ));
   }
- }
+}
