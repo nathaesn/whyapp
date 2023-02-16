@@ -173,8 +173,6 @@ class _ChatUIState extends State<ChatUI> {
             key: _formKey,
             child: TextFormField(
               controller: message,
-              validator: (val) =>
-                  val!.isEmpty ? 'Mohon Masukkan Chat Anda!' : null,
               decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(
@@ -257,35 +255,42 @@ class _ChatUIState extends State<ChatUI> {
                               quarterTurns: 2,
                               child: Row(
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(5),
-                                          topRight: Radius.circular(20),
-                                          bottomLeft: Radius.circular(20),
-                                          bottomRight: Radius.circular(20)),
-                                      color: Color(0xffFFFFFF),
-                                    ),
-                                    padding: EdgeInsets.all(13),
-                                    constraints: BoxConstraints(
-                                        maxWidth:
-                                            MediaQuery.of(context).size.width *
-                                                0.65),
-                                    child: Column(
-                                      children: [
-                                        Visibility(
-                                            visible: snapshot.data!.docs[index]
-                                                    .get('image') !=
-                                                "",
+                                  Column(
+                                    children: [
+                                      Visibility(
+                                          visible: snapshot.data!.docs[index]
+                                                  .get('image') !=
+                                              "",
+                                          child: SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.3,
                                             child: Image.network(snapshot
                                                 .data!.docs[index]
-                                                .get('image'))),
-                                        Text(
+                                                .get('image')),
+                                          )),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(5),
+                                              topRight: Radius.circular(20),
+                                              bottomLeft: Radius.circular(20),
+                                              bottomRight: Radius.circular(20)),
+                                          color: Color(0xffFFFFFF),
+                                        ),
+                                        padding: EdgeInsets.all(13),
+                                        constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.65),
+                                        child: Text(
                                           snapshot.data!.docs[index]
                                               .get('content'),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   )
                                 ],
                               ),
@@ -299,23 +304,61 @@ class _ChatUIState extends State<ChatUI> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(5),
-                                          bottomLeft: Radius.circular(20),
-                                          bottomRight: Radius.circular(20)),
-                                      color: Color(0xffFFFFFF),
-                                    ),
-                                    padding: EdgeInsets.all(13),
-                                    constraints: BoxConstraints(
-                                        maxWidth:
-                                            MediaQuery.of(context).size.width *
-                                                0.65),
-                                    child: Text(
-                                      snapshot.data!.docs[index].get('content'),
-                                    ),
-                                  )
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(5),
+                                            bottomLeft: Radius.circular(20),
+                                            bottomRight: Radius.circular(20)),
+                                        color: Color(0xffFFFFFF),
+                                      ),
+                                      padding: EdgeInsets.all(13),
+                                      constraints: BoxConstraints(
+                                          maxWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.65),
+                                      child: Visibility(
+                                        visible: snapshot.data!.docs[index]
+                                                .get('image') !=
+                                            "",
+                                        replacement: Text(
+                                          snapshot.data!.docs[index]
+                                              .get('content'),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            SizedBox(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.35,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: Image.network(
+                                                  snapshot.data!.docs[index]
+                                                      .get('image'),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Visibility(
+                                                visible: snapshot
+                                                        .data!.docs[index]
+                                                        .get('content') !=
+                                                    "",
+                                                child: Text(
+                                                  snapshot.data!.docs[index]
+                                                      .get('content'),
+                                                )),
+                                          ],
+                                        ),
+                                      )),
                                 ],
                               ),
                             ),

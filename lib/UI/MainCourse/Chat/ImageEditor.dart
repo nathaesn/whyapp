@@ -40,6 +40,8 @@ class _ImageActionUIState extends State<ImageActionUI> {
         .collection(widget.chatId.toString())
         .doc(DateTime.now().millisecondsSinceEpoch.toString());
 
+    print(downloadUrl);
+
     FirebaseFirestore.instance.runTransaction((transaction) async {
       final sendmessage = await transaction.set(
         documentReference,
@@ -48,7 +50,7 @@ class _ImageActionUIState extends State<ImageActionUI> {
           'idSecondUser': widget.uidseconduser,
           'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
           'date': DateTime.now().toString(),
-          'content': message.text,
+          'content': message.text != "" ? message.text : "",
           'image': downloadUrl,
         },
       );
@@ -89,8 +91,6 @@ class _ImageActionUIState extends State<ImageActionUI> {
               child: TextFormField(
                 style: TextStyle(color: Colors.white),
                 controller: message,
-                validator: (val) =>
-                    val!.isEmpty ? 'Mohon Masukkan Chat Anda!' : null,
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(
