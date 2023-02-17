@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zoom_widget/zoom_widget.dart';
 
@@ -28,10 +29,21 @@ class _ImageActionUIState extends State<ImageActionUI> {
   final _firebaseStorage = FirebaseStorage.instance;
 
   void sendMessage() async {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        content: Center(
+          child: CupertinoActivityIndicator(),
+        ),
+      ),
+    );
     var imagesPath = File(widget.imageFile!.path);
     var snapshot = await _firebaseStorage
         .ref()
-        .child('images/imageName')
+        .child('images/chat/' +
+            widget.chatId.toString() +
+            "/" +
+            DateTime.now().millisecondsSinceEpoch.toString())
         .putFile(imagesPath);
     var downloadUrl = await snapshot.ref.getDownloadURL();
     var documentReference = FirebaseFirestore.instance
@@ -57,6 +69,7 @@ class _ImageActionUIState extends State<ImageActionUI> {
 
       if (sendmessage != null) {
         message.clear();
+        Navigator.pop(context);
         Navigator.pop(context);
       }
     });
