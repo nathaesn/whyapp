@@ -37,13 +37,15 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^1.1.6
-  google_fonts: ^3.0.1
+  google_fonts: ^4.0.3
   google_sign_in: ^5.4.3
   grouped_list: ^5.1.2
   image_picker: ^0.8.6+1
   intl: 
   lottie: ^1.4.2
   ripple_backdrop_animate_route: ^1.1.0
+  uuid: ^3.0.7
+  zego_uikit_prebuilt_call: ^2.0.0
   zoom_widget: ^2.0.0
 
 dev_dependencies:

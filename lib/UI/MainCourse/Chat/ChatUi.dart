@@ -10,6 +10,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:whyapp/Fromated/timeFormated.dart';
 import 'package:whyapp/Theme.dart';
+import 'package:whyapp/UI/MainCourse/Chat/Call_UI.dart';
 import 'package:whyapp/UI/MainCourse/Chat/ImageEditor.dart';
 
 class ChatUI extends StatefulWidget {
@@ -238,6 +239,21 @@ class _ChatUIState extends State<ChatUI> {
           )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CallAction(
+                        callId: chatId.toString(),
+                        userId: auth.currentUser!.uid,
+                        username: auth.currentUser!.displayName.toString()),
+                  ));
+            },
+            child: Icon(Icons.call),
+          )
+        ],
         titleSpacing: -15,
         title: ListTile(
           leading: Padding(
