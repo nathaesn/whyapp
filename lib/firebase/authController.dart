@@ -9,8 +9,15 @@ class AuthenticationHelper {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   //Register
-  Future editusername({required String name}) async {
-    await user!.updateDisplayName(name);
+  Future updateUser(
+      {required String name,
+      required String status,
+      required String imgUrl}) async {
+    user.updateProfile(displayName: name, photoURL: imgUrl).then((value) {
+      updateUserInfo(status: status);
+    }).catchError((e) {
+      print("There was an error updating profile");
+    });
   }
 
   //Register
@@ -79,10 +86,27 @@ class AuthenticationHelper {
       "uid": auth.currentUser!.uid,
       "email": auth.currentUser!.email,
       "image": auth.currentUser!.photoURL,
-      "status": "",
+      "status": "halo, salam kenal😊",
+    });
+  }
+
+  Future updateUserInfo({required String status}) async {
+    // users.add({});
+    CollectionReference users = await firestore.collection('user');
+    await users.doc(auth.currentUser!.email).update({
+      "username": auth.currentUser!.displayName,
+      "image": auth.currentUser!.photoURL,
+      "status": status,
+    });
+  }
+
+  Future setProfile() async {
+    // users.add({});
+    CollectionReference users = await firestore.collection('user');
+    await users.doc(auth.currentUser!.email).update({
+      "username": auth.currentUser!.displayName,
+      "image": auth.currentUser!.photoURL,
     });
   }
 }
-
-
 ///https://firebase.flutter.dev/docs/firestore/usage/

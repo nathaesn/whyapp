@@ -240,7 +240,7 @@ class _LoginUIState extends State<LoginUI> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
                     elevation: 0,
-                    primary: secondarycolor,
+                    backgroundColor: secondarycolor,
                   )),
             ),
             SizedBox(
@@ -363,7 +363,7 @@ class _LoginUIState extends State<LoginUI> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
                     elevation: 5,
-                    primary: primarycolor,
+                    backgroundColor: primarycolor,
                   )),
             ),
             Row(

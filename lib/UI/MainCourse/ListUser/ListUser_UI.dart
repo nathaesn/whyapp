@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:whyapp/UI/MainCourse/Chat/ChatUi.dart';
 
 class ListUserUI extends StatefulWidget {
@@ -41,7 +42,6 @@ class _ListUserUIState extends State<ListUserUI> {
   @override
   void initState() {
     getData();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -49,7 +49,8 @@ class _ListUserUIState extends State<ListUserUI> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ya"),
+        title: TextFormField(),
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.search))],
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance.collection('user').snapshots(),
@@ -71,6 +72,29 @@ class _ListUserUIState extends State<ListUserUI> {
                             ),
                           ));
                     },
+                    leading: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 3),
+                      child: Hero(
+                        tag: 'photo-profile-chat',
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: snapshot.data!.docs[index].get('image') == null
+                              ? SvgPicture.asset(
+                                  "Assets/Svg/DefaultImg.svg",
+                                  height: 40,
+                                  width: 40,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.network(
+                                  snapshot.data!.docs[index].get('image'),
+                                  height: 40,
+                                  width: 40,
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
+                      ),
+                    ),
+                    subtitle: Text(snapshot.data!.docs[index].get('status')),
                     title: Text(
                       snapshot.data!.docs[index].get('username'),
                     ),
@@ -82,7 +106,7 @@ class _ListUserUIState extends State<ListUserUI> {
           if (snapshot.hasError) {
             return const Text('Error');
           } else {
-            return const CircularProgressIndicator();
+            return const Center(child: const CircularProgressIndicator());
           }
         },
       ),

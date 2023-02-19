@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:whyapp/Theme.dart';
 import 'package:whyapp/UI/Login%20&%20Register%20UI/Emailverify.dart';
 import 'package:whyapp/UI/Login%20&%20Register%20UI/Login_UI.dart';
 import 'package:whyapp/UI/MainCourse/HomeScreen_UI.dart';
+import 'package:whyapp/firebase/authController.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,12 +48,13 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     login();
+    AuthenticationHelper().setProfile();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         textTheme: GoogleFonts.poppinsTextTheme(),

@@ -18,8 +18,12 @@ class _ChatListState extends State<ChatList> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: InkWell(
-        onTap: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ListUserUI(),));
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ListUserUI(),
+              ));
         },
         child: Container(
           width: 50,
@@ -45,8 +49,11 @@ class _ChatListState extends State<ChatList> {
                     SizedBox(
                         height: 250,
                         width: 350,
-                        child: Lottie.asset('Assets/Animation/chat-home.json',
-                            repeat: true)),
+                        child: Lottie.asset(
+                          'Assets/Animation/chat-home.json',
+                          repeat: true,
+                          reverse: true,
+                        )),
                     SizedBox(
                       height: 20,
                     ),

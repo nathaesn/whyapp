@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:whyapp/Theme.dart';
 import 'package:whyapp/UI/Login%20&%20Register%20UI/Login_UI.dart';
@@ -34,6 +35,7 @@ class _ProfileUIState extends State<ProfileUI> {
         .listen((event) {
       setState(() {
         username = event.get("username");
+        userPhotos = event.get("image");
         isload = false;
       });
     });
@@ -42,7 +44,6 @@ class _ProfileUIState extends State<ProfileUI> {
   @override
   void initState() {
     getData();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -57,12 +58,24 @@ class _ProfileUIState extends State<ProfileUI> {
               children: [
                 Row(
                   children: [
-                    Container(
-                      height: 80,
-                      width: 80,
-                      decoration: BoxDecoration(
-                          color: greycolor,
-                          borderRadius: BorderRadius.circular(100)),
+                    Hero(
+                      tag: "profile-to-edit",
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: userPhotos == null
+                            ? SvgPicture.asset(
+                                "Assets/Svg/DefaultImg.svg",
+                                height: 80,
+                                width: 80,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                userPhotos,
+                                height: 80,
+                                width: 80,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
                     ),
                     SizedBox(
                       width: 20,

@@ -162,7 +162,7 @@ class _VerifyEmailUIState extends State<VerifyEmailUI> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30)),
                       elevation: 0,
-                      primary: secondarycolor,
+                      backgroundColor: secondarycolor,
                     )),
               ),
               Spacer()

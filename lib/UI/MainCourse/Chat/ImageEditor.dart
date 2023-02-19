@@ -32,8 +32,12 @@ class _ImageActionUIState extends State<ImageActionUI> {
     showCupertinoDialog(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        content: Center(
-          child: CupertinoActivityIndicator(),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            CupertinoActivityIndicator(),
+            Text("Sedang melakukan upload foto...")
+          ],
         ),
       ),
     );
@@ -51,8 +55,6 @@ class _ImageActionUIState extends State<ImageActionUI> {
         .doc(widget.chatId.toString())
         .collection(widget.chatId.toString())
         .doc(DateTime.now().millisecondsSinceEpoch.toString());
-
-    print(downloadUrl);
 
     FirebaseFirestore.instance.runTransaction((transaction) async {
       final sendmessage = await transaction.set(

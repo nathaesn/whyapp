@@ -33,10 +33,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth: 
   firebase_core: 
+  firebase_messaging: ^14.2.4
   firebase_storage: 
   flutter:
     sdk: flutter
   flutter_svg: ^1.1.6
+  get: ^4.6.5
   google_fonts: ^4.0.3
   google_sign_in: ^5.4.3
   grouped_list: ^5.1.2
@@ -44,6 +46,8 @@ dependencies:
   intl: 
   lottie: ^1.4.2
   ripple_backdrop_animate_route: ^1.1.0
+  slide_to_act: ^2.0.1
+  swipe_to: ^1.0.2
   uuid: ^3.0.7
   zego_uikit_prebuilt_call: ^2.0.0
   zoom_widget: ^2.0.0
