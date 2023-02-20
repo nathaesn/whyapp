@@ -1,6 +1,9 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:whyapp/NotificationController.dart';
 import 'package:whyapp/Theme.dart';
+import 'package:whyapp/UI/MainCourse/Chat/ChatUi.dart';
 import 'package:whyapp/UI/MainCourse/HomeScreen_Content/ChatList_UI.dart';
 import 'package:whyapp/UI/MainCourse/HomeScreen_Content/Profile-UI.dart';
 import 'package:whyapp/UI/MainCourse/HomeScreen_Content/StatusList-UI.dart';
@@ -17,12 +20,58 @@ class _HomeScreenUIState extends State<HomeScreenUI>
   //CONTROLLER
   late TabController _tabController;
 
+  void getDeviceTokenToSendNotification() async {
+    final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+    final token = await _fcm.getToken();
+    deviceTokenToSendPushNotification = token.toString();
+    print("Token Value $deviceTokenToSendPushNotification");
+  }
+
 //START
   @override
   void initState() {
+    getDeviceTokenToSendNotification();
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    FirebaseMessaging.instance.getInitialMessage().then(
+      (message) {
+        if (message != null) {
+          print("WOII ANJRRR " + message.data['email']);
+          if (message.data['email'] != null) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ChatUI(
+                  email: message.data['email'],
+                ),
+              ),
+            );
+          }
+        }
+      },
+    );
+
+    FirebaseMessaging.onMessage.listen(
+      (message) {
+        if (message.notification != null) {
+          print(message.data["email"]);
+          NotificationController.createanddisplaynotification(message);
+        }
+      },
+    );
+
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (message) {
+        if (message.notification != null) {
+          // print("yo : " + message.data["_id"]);
+          // print(message.notification!.title);
+          // print(message.notification!.body);
+          // print("message.data22 ${message.data['_id']}");
+        }
+      },
+    );
   }
+
+  String? deviceTokenToSendPushNotification;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +87,14 @@ class _HomeScreenUIState extends State<HomeScreenUI>
             "WhyApp",
             style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
           ),
-          actions: [IconButton(onPressed: () {}, icon: Icon(Icons.search))],
+          actions: [
+            IconButton(
+                onPressed: () {
+                  pushNotificationMessage(
+                      deviceTo: "deviceTo", content: "content", title: "title");
+                },
+                icon: Icon(Icons.search))
+          ],
           elevation: 0,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(kToolbarHeight),

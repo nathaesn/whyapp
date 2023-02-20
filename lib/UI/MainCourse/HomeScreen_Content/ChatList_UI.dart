@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:whyapp/Fromated/timeFormated.dart';
 import 'package:whyapp/Theme.dart';
+import 'package:whyapp/UI/MainCourse/Chat/ChatUi.dart';
 import 'package:whyapp/UI/MainCourse/ListUser/ListUser_UI.dart';
 
 class ChatList extends StatefulWidget {
@@ -12,7 +16,10 @@ class ChatList extends StatefulWidget {
 }
 
 class _ChatListState extends State<ChatList> {
-  bool key = true;
+  bool key = false;
+
+  //GetUser
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -69,80 +76,127 @@ class _ChatListState extends State<ChatList> {
                 ),
               ],
             )
-          : listchat(),
+          : listchat(auth: auth),
     );
   }
 }
 
-Widget listchat() {
-  return ListView.builder(
-    itemCount: 23,
-    shrinkWrap: true,
-    itemBuilder: (BuildContext context, int index) {
-      return Container(
-        margin: EdgeInsets.symmetric(vertical: 10),
-        child: Column(
-          children: [
-            ListTile(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return CupertinoAlertDialog(
-                      title: Text("TES"),
-                      content:
-                          Text("TESting jkaslkdjalksdjaldjakldjlkajiodusoiu"),
-                      actions: [
-                        TextButton(onPressed: () {}, child: Text("ok")),
-                        TextButton(onPressed: () {}, child: Text("ok"))
-                      ],
-                    );
-                  },
-                );
-              },
-              title: Row(
+Widget listchat({required FirebaseAuth auth}) {
+  return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+    stream: FirebaseFirestore.instance
+        .collection('user')
+        .doc(auth.currentUser!.email)
+        .collection('chatList')
+        .orderBy('lastChatTime', descending: true)
+        .snapshots(),
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        return ListView.builder(
+          itemCount: snapshot.data!.docs.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: Column(
                 children: [
-                  Expanded(
-                    flex: 3,
-                    child: Text(
-                      "Cece Kevin",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                  Dismissible(
+                    onDismissed: (direction) {
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) => CupertinoAlertDialog(
+                          title: Text("Delete this chat?"),
+                          content: Text("Hapus "),
+                        ),
+                      );
+                    },
+                    key: Key(snapshot.data!.docs[index].id),
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatUI(
+                                  email:
+                                      snapshot.data!.docs[index].get("email")),
+                            ));
+                      },
+                      title: Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Text(
+                              firstAsync().toString(),
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  timeFormated(
+                                      date: snapshot.data!.docs[index]
+                                          .get("lastChatTime")),
+                                  style:
+                                      TextStyle(color: greycolor, fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(snapshot.data!.docs[index].get("lastContent")),
+                          Divider(
+                            color: greycolor,
+                          )
+                        ],
+                      ),
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Image.network(
+                          auth.currentUser!.photoURL.toString(),
+                          height: 50,
+                          width: 50,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          "10:00",
-                          style: TextStyle(color: greycolor, fontSize: 12),
-                        ),
-                      ],
-                    ),
-                  )
                 ],
               ),
-              subtitle: Column(
-                children: [
-                  Text("Lorem ipsum dolor sit amet, consectetur."),
-                  Divider(
-                    color: greycolor,
-                  )
-                ],
-              ),
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image.network(
-                  "http://evillagesite.xyz/storage/public/profiles/1673449854.png",
-                  height: 50,
-                  width: 50,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+            );
+          },
+        );
+      }
+      if (snapshot.hasError) {
+        return const Text('Error');
+      } else {
+        return Center(child: const CircularProgressIndicator());
+      }
     },
   );
+}
+
+Future<String> getUsername({required String emailUser}) async {
+  var usernameUser = "gda";
+  await FirebaseFirestore.instance
+      .collection("user")
+      .doc(emailUser.toString())
+      .snapshots()
+      .listen((event) {
+    usernameUser = event.get("username");
+  });
+  return usernameUser;
+}
+
+Future<int> four() async {
+  return 4;
+}
+
+Future<String> firstAsync() async {
+  await Future<String>.delayed(const Duration(seconds: 2));
+  return "First!";
 }

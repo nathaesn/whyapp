@@ -141,34 +141,6 @@ class _ChatUIState extends State<ChatUI> {
     );
   }
 
-  //Message Send
-  void onSendMessage() {
-    var documentReference = FirebaseFirestore.instance
-        .collection('messages')
-        .doc(chatId.toString())
-        .collection(chatId.toString())
-        .doc(DateTime.now().millisecondsSinceEpoch.toString());
-
-    FirebaseFirestore.instance.runTransaction((transaction) async {
-      final sendmessage = await transaction.set(
-        documentReference,
-        {
-          'idFirstUser': auth.currentUser!.uid,
-          'idSecondUser': uidseconduser,
-          'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
-          'date': DateTime.now().toString(),
-          'content': message.text,
-          'image': "",
-        },
-      );
-
-      if (sendmessage != null) {
-        message.clear();
-        scrollDown();
-      }
-    });
-  }
-
   //ScrollAction
   bool hidedate = false;
   void _scrollListener() {
@@ -354,10 +326,16 @@ class _ChatUIState extends State<ChatUI> {
                           ),
                         ),
                         suffixIcon: InkWell(
-                          onTap: () {
+                          onTap: () async {
                             if (_formKey.currentState!.validate()) {
                               if (message.text != "") {
-                                onSendMessage();
+                                MessageHelper().onConnection(
+                                    chatID: chatId.toString(),
+                                    message: message.text,
+                                    uidSecondUsers: uidseconduser,
+                                    emailSecondUsers: widget.email);
+                                message.clear();
+                                scrollDown();
                               }
                             }
                           },
@@ -389,84 +367,166 @@ class _ChatUIState extends State<ChatUI> {
                 getReplyController.replyMessage(
                     Message: snapsot.get('content'));
               },
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: imgUser == null
-                          ? SvgPicture.asset(
-                              "Assets/Svg/DefaultImg.svg",
-                              height: 35,
-                              width: 35,
-                              fit: BoxFit.cover,
-                            )
-                          : Image.network(
-                              imgUser,
-                              height: 35,
-                              width: 35,
-                              fit: BoxFit.cover,
-                            ),
-                    ),
-                  ),
-                  Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(5),
-                            topRight: Radius.circular(20),
-                            bottomLeft: Radius.circular(13),
-                            bottomRight: Radius.circular(20)),
-                        color: Color(0xffFFFFFF),
+              child: CupertinoContextMenu(
+                previewBuilder: (context, animation, child) => Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 3),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: imgUser == null
+                            ? SvgPicture.asset(
+                                "Assets/Svg/DefaultImg.svg",
+                                height: 35,
+                                width: 35,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                imgUser,
+                                height: 35,
+                                width: 35,
+                                fit: BoxFit.cover,
+                              ),
                       ),
-                      padding: EdgeInsets.all(13),
-                      constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width * 0.65),
-                      child: Visibility(
-                        visible: snapsot.get('image') != "",
-                        replacement: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              // snapsot['content'],
-                              snapsot.get('content'),
-                              // dataNotIndex[idx].get('content')
-                            ),
-                            Text(
-                              timeFormated(date: snapsot.get('date')),
-                              style: TextStyle(color: greycolor, fontSize: 10),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: MediaQuery.of(context).size.width * 0.35,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.network(
-                                  snapsot.get('image'),
-                                ),
+                    ),
+                    Column(
+                      children: [
+                        Visibility(
+                          visible: snapsot.get('image') != "",
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                snapsot.get('image'),
                               ),
                             ),
-                            SizedBox(
-                              height: 5,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Visibility(
+                          visible: snapsot.get('content') != "",
+                          child: Material(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(5),
+                                topRight: Radius.circular(20),
+                                bottomLeft: Radius.circular(13),
+                                bottomRight: Radius.circular(20)),
+                            color: Color(0xffFFFFFF),
+                            child: Container(
+                              padding: EdgeInsets.all(5),
+                              width: double.infinity,
+                              constraints: BoxConstraints(
+                                  maxWidth:
+                                      MediaQuery.of(context).size.width * 0.65),
+                              child: Text(
+                                snapsot.get('content'),
+                              ),
                             ),
-                            Visibility(
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                actions: <Widget>[
+                  CupertinoContextMenuAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    isDefaultAction: true,
+                    trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
+                    child: const Text('Copy'),
+                  ),
+                  CupertinoContextMenuAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    trailingIcon: CupertinoIcons.reply,
+                    child: const Text('Reply'),
+                  ),
+                  CupertinoContextMenuAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    isDestructiveAction: true,
+                    trailingIcon: CupertinoIcons.delete,
+                    child: const Text('Delete'),
+                  ),
+                ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 3),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: imgUser == null
+                            ? SvgPicture.asset(
+                                "Assets/Svg/DefaultImg.svg",
+                                height: 35,
+                                width: 35,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                imgUser,
+                                height: 35,
+                                width: 35,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
+                    ),
+                    Material(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(5),
+                          topRight: Radius.circular(20),
+                          bottomLeft: Radius.circular(13),
+                          bottomRight: Radius.circular(20)),
+                      color: Color(0xffFFFFFF),
+                      child: Container(
+                          padding: EdgeInsets.all(13),
+                          constraints: BoxConstraints(
+                              maxWidth:
+                                  MediaQuery.of(context).size.width * 0.65),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Visibility(
+                                visible: snapsot.get('image') != "",
+                                child: SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.35,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(
+                                      snapsot.get('image'),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Visibility(
                                 visible: snapsot.get('content') != "",
                                 child: Text(
                                   snapsot.get('content'),
-                                )),
-                            Text(
-                              timeFormated(date: snapsot.get('date')),
-                              style: TextStyle(color: greycolor, fontSize: 10),
-                            ),
-                          ],
-                        ),
-                      )),
-                ],
+                                ),
+                              ),
+                              Text(
+                                timeFormated(date: snapsot.get('date')),
+                                style: TextStyle(fontSize: 10),
+                              ),
+                            ],
+                          )),
+                    ),
+                  ],
+                ),
               ),
             ),
           )
@@ -514,30 +574,17 @@ class _ChatUIState extends State<ChatUI> {
                               topRight: Radius.circular(5),
                               bottomLeft: Radius.circular(20),
                               bottomRight: Radius.circular(20)),
-                          color: Color(0xffFFFFFF),
+                          color: Color(0xffF28F8F),
                         ),
                         padding: EdgeInsets.all(13),
                         constraints: BoxConstraints(
                             maxWidth: MediaQuery.of(context).size.width * 0.65),
-                        child: Visibility(
-                          visible: snapsot.get('image') != "",
-                          replacement: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                snapsot.get('content'),
-                              ),
-                              Text(
-                                timeFormated(date: snapsot.get('date')),
-                                style:
-                                    TextStyle(color: greycolor, fontSize: 10),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Visibility(
+                              visible: snapsot.get('image') != "",
+                              child: SizedBox(
                                 height:
                                     MediaQuery.of(context).size.width * 0.35,
                                 child: ClipRRect(
@@ -547,21 +594,21 @@ class _ChatUIState extends State<ChatUI> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Visibility(
-                                  visible: snapsot.get('content') != "",
-                                  child: Text(
-                                    snapsot.get('content'),
-                                  )),
-                              Text(
-                                timeFormated(date: snapsot.get('date')),
-                                style:
-                                    TextStyle(color: greycolor, fontSize: 10),
-                              ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Visibility(
+                              visible: snapsot.get('content') != "",
+                              child: Text(snapsot.get('content'),
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                            Text(
+                              timeFormated(date: snapsot.get('date')),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 10),
+                            ),
+                          ],
                         )),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 3),

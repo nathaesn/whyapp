@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whyapp/NotificationController.dart';
 import 'package:whyapp/Theme.dart';
 
 class StatusUI extends StatefulWidget {
@@ -14,14 +15,17 @@ class _StatusUIState extends State<StatusUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Container(
-        width: 50,
-        decoration: BoxDecoration(
-            color: secondarycolor, borderRadius: BorderRadius.circular(10)),
-        height: 50,
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
+      floatingActionButton: InkWell(
+        onTap: () {},
+        child: Container(
+          width: 50,
+          decoration: BoxDecoration(
+              color: secondarycolor, borderRadius: BorderRadius.circular(10)),
+          height: 50,
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
         ),
       ),
       body: key

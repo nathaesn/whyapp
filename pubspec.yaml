@@ -29,21 +29,23 @@ environment:
 dependencies:
   awesome_snackbar_content: ^0.1.0
   backdrop: ^0.8.1
-  cloud_firestore: 
+  cloud_firestore: null
   cupertino_icons: ^1.0.2
-  firebase_auth: 
-  firebase_core: 
+  firebase_auth: null
+  firebase_core: null
   firebase_messaging: ^14.2.4
-  firebase_storage: 
+  firebase_storage: null
   flutter:
     sdk: flutter
+  flutter_local_notifications: ^8.2.0
   flutter_svg: ^1.1.6
   get: ^4.6.5
   google_fonts: ^4.0.3
   google_sign_in: ^5.4.3
   grouped_list: ^5.1.2
+  http: ^0.13.5
   image_picker: ^0.8.6+1
-  intl: 
+  intl: null
   lottie: ^1.4.2
   ripple_backdrop_animate_route: ^1.1.0
   slide_to_act: ^2.0.1
