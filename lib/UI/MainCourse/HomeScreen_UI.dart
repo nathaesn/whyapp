@@ -8,6 +8,8 @@ import 'package:whyapp/UI/MainCourse/HomeScreen_Content/ChatList_UI.dart';
 import 'package:whyapp/UI/MainCourse/HomeScreen_Content/Profile-UI.dart';
 import 'package:whyapp/UI/MainCourse/HomeScreen_Content/StatusList-UI.dart';
 
+import 'HomeScreen_Content/TabChatList.dart';
+
 class HomeScreenUI extends StatefulWidget {
   HomeScreenUI({Key? key}) : super(key: key);
 
@@ -65,6 +67,34 @@ class _HomeScreenUIState extends State<HomeScreenUI>
 
   @override
   Widget build(BuildContext context) {
+    if (MediaQuery.of(context).size.width >= 700) {
+      return tabUI();
+    } else {
+      return mobileUI();
+    }
+  }
+
+  Widget tabUI() {
+    return SafeArea(
+      child: Scaffold(
+        body: Row(
+          children: [
+            Container(
+              color: Color(0xffE94D4D),
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width * 0.12,
+              child: Text("GGWP"),
+            ),
+            Expanded(
+              child: TabListChat(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget mobileUI() {
     return Scaffold(
       appBar: AppBar(
           automaticallyImplyLeading: false,

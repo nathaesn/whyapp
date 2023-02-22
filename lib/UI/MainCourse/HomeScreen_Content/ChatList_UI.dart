@@ -26,43 +26,84 @@ class _ChatListState extends State<ChatList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: InkWell(
-        onTap: () {
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => ListUserUI(),
-          //     ));
-          setState(() {
-            if (widhtCont == 50) {
-              widhtCont = 200;
-            } else {
-              widhtCont = 50;
-            }
-          });
-        },
-        child: AnimatedContainer(
-          duration: Duration(seconds: 1),
-          curve: Curves.fastOutSlowIn,
+      floatingActionButton: AnimatedContainer(
+        duration: Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
+        width: widhtCont,
+        child: Container(
           width: widhtCont,
-          child: Container(
-            width: widhtCont,
-            decoration: BoxDecoration(
-                color: secondarycolor, borderRadius: BorderRadius.circular(10)),
-            height: 50,
-            child: Row(
-              children: [
-                Icon(
-                  Icons.add,
-                  color: Colors.white,
-                ),
-                AnimatedSize(
+          decoration: BoxDecoration(
+              color: secondarycolor, borderRadius: BorderRadius.circular(10)),
+          height: 50,
+          child: Row(
+            mainAxisAlignment: widhtCont == 200
+                ? MainAxisAlignment.spaceAround
+                : MainAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    if (widhtCont == 50) {
+                      widhtCont = 170;
+                    } else {
+                      widhtCont = 50;
+                    }
+                  });
+                },
+                icon: AnimatedSwitcher(
                     duration: Duration(seconds: 1),
-                    curve: Curves.fastOutSlowIn,
-                    child: Visibility(
-                        visible: widhtCont == 200, child: Text("Add Chat")))
-              ],
-            ),
+                    transitionBuilder: (child, anim) => RotationTransition(
+                          turns: child.key == ValueKey('icon1')
+                              ? Tween<double>(begin: 1, end: 0.75).animate(anim)
+                              : Tween<double>(begin: 0.75, end: 1)
+                                  .animate(anim),
+                          child: FadeTransition(opacity: anim, child: child),
+                        ),
+                    child: widhtCont == 50
+                        ? Icon(
+                            Icons.add,
+                            key: const ValueKey('icon1'),
+                            color: Colors.white,
+                          )
+                        : Icon(
+                            Icons.close,
+                            key: const ValueKey('icon2'),
+                            color: Colors.white,
+                          )),
+              ),
+              AnimatedSize(
+                  duration: Duration(seconds: 1),
+                  curve: Curves.fastOutSlowIn,
+                  child: Visibility(
+                      visible: widhtCont == 170,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ListUserUI(),
+                              ));
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              "Add Chat",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ListUserUI(),
+                                      ));
+                                },
+                                icon: Icon(Icons.arrow_forward_ios_rounded,
+                                    color: Colors.white))
+                          ],
+                        ),
+                      ))),
+            ],
           ),
         ),
       ),
