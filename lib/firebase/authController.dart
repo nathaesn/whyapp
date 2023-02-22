@@ -126,7 +126,7 @@ class AuthenticationHelper {
     final token = await _fcm.getToken();
 
     CollectionReference users = await firestore.collection('user');
-    await users.doc(auth.currentUser!.email).set({
+    await users.doc(auth.currentUser!.email).update({
       "tokenDevice": token,
     });
   }

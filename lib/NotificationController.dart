@@ -68,7 +68,6 @@ void pushNotificationMessage({
   // final List myList = datanya.docs.toList();
   // print("Haloo KYAAA :  " + myList[0]["token"]);
   // print(myList.length);
-  int index = 0;
   final data = {
     "registration_ids": [deviceTo],
     "notification": {
