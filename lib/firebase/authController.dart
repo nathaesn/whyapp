@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationHelper {
@@ -7,6 +8,7 @@ class AuthenticationHelper {
   get user => _auth.currentUser;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   //Register
   Future updateUser(
@@ -43,6 +45,9 @@ class AuthenticationHelper {
   Future signIn({required String email, required String password}) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      if (_auth.currentUser!.emailVerified == true) {
+        setTokenDevice();
+      }
 
       return null;
     } on FirebaseAuthException catch (e) {
@@ -71,6 +76,11 @@ class AuthenticationHelper {
   //Logout
   Future signOut() async {
     await FirebaseAuth.instance.signOut();
+
+    CollectionReference users = await firestore.collection('user');
+    await users.doc(auth.currentUser!.email).update({
+      "tokenDevice": "",
+    });
   }
 
   //VerifyEmail
@@ -79,6 +89,8 @@ class AuthenticationHelper {
   }
 
   Future inputDataUser() async {
+    final token = await _fcm.getToken();
+
     // users.add({});
     CollectionReference users = await firestore.collection('user');
     await users.doc(auth.currentUser!.email).set({
@@ -87,6 +99,7 @@ class AuthenticationHelper {
       "email": auth.currentUser!.email,
       "image": auth.currentUser!.photoURL,
       "status": "halo, salam kenal😊",
+      "tokenDevice": token,
     });
   }
 
@@ -106,6 +119,15 @@ class AuthenticationHelper {
     await users.doc(auth.currentUser!.email).update({
       "username": auth.currentUser!.displayName,
       "image": auth.currentUser!.photoURL,
+    });
+  }
+
+  void setTokenDevice() async {
+    final token = await _fcm.getToken();
+
+    CollectionReference users = await firestore.collection('user');
+    await users.doc(auth.currentUser!.email).set({
+      "tokenDevice": token,
     });
   }
 }

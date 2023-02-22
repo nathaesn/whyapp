@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
@@ -59,17 +60,23 @@ void pushNotificationMessage({
   required String content,
   required String title,
 }) async {
+  // final datanya = await FirebaseFirestore.instance
+  //     .collection("user")
+  //     .doc("qilaadikara@gmail.com")
+  //     .collection("tokenDevice")
+  //     .get();
+  // final List myList = datanya.docs.toList();
+  // print("Haloo KYAAA :  " + myList[0]["token"]);
+  // print(myList.length);
+  int index = 0;
   final data = {
-    "registration_ids": [
-      "ePcga9yPRFKEYG6p9rGhte:APA91bE_lu15DDE5vAh_OhRl8Z2tBGSUNjH7K5UBtSyH5eQvZic5il3R1nSAq64pNGNEnHFKOdHFOqLb4SzJhzcu2r0RV-l-0pqpmPaO8NLa31qTDKuq3bAGe9z6o0o1nb6lLR1TQx4K"
-    ],
+    "registration_ids": [deviceTo],
     "notification": {
       "body": content,
       "title": title,
       "android_channel_id": "whyapp",
       "sound": false
     },
-    "data": {"email": "meyyqilaadikara@gmail.com"}
   };
 
   final headers = {

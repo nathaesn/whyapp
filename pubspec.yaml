@@ -52,6 +52,7 @@ dependencies:
   swipe_to: ^1.0.2
   uuid: ^3.0.7
   zego_uikit_prebuilt_call: ^2.0.0
+  zego_uikit_signaling_plugin: ^2.0.0
   zoom_widget: ^2.0.0
 
 dev_dependencies:

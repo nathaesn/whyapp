@@ -20,17 +20,9 @@ class _HomeScreenUIState extends State<HomeScreenUI>
   //CONTROLLER
   late TabController _tabController;
 
-  void getDeviceTokenToSendNotification() async {
-    final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-    final token = await _fcm.getToken();
-    deviceTokenToSendPushNotification = token.toString();
-    print("Token Value $deviceTokenToSendPushNotification");
-  }
-
 //START
   @override
   void initState() {
-    getDeviceTokenToSendNotification();
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     FirebaseMessaging.instance.getInitialMessage().then(
@@ -70,8 +62,6 @@ class _HomeScreenUIState extends State<HomeScreenUI>
       },
     );
   }
-
-  String? deviceTokenToSendPushNotification;
 
   @override
   Widget build(BuildContext context) {

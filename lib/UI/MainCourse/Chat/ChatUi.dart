@@ -38,6 +38,7 @@ class _ChatUIState extends State<ChatUI> {
   var imgUser;
   var status;
   var Reply;
+  var tokenDevice;
   bool isload = true;
 
   String? chatId;
@@ -65,6 +66,7 @@ class _ChatUIState extends State<ChatUI> {
         .listen((event) {
       setState(() {
         uidseconduser = event.get("uid");
+        tokenDevice = event.get("tokenDevice");
         username = event.get("username");
         status = event.get("status");
         imgUser = event.get("image");
@@ -330,6 +332,7 @@ class _ChatUIState extends State<ChatUI> {
                             if (_formKey.currentState!.validate()) {
                               if (message.text != "") {
                                 MessageHelper().onConnection(
+                                    tokenDevice: tokenDevice,
                                     chatID: chatId.toString(),
                                     message: message.text,
                                     uidSecondUsers: uidseconduser,

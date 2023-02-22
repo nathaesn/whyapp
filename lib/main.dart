@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -42,6 +43,7 @@ class _MyAppState extends State<MyApp> {
         setState(() {
           islogin = true;
           if (user.emailVerified == true) {
+            AuthenticationHelper().setTokenDevice();
             isverify = true;
           } else {
             isverify = false;
@@ -65,6 +67,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         textTheme: GoogleFonts.poppinsTextTheme(),
         primarySwatch: themecolor,
+        unselectedWidgetColor: secondarycolorhigh,
       ),
       home: islogin
           ? isverify
