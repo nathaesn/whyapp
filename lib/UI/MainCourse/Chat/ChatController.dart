@@ -158,8 +158,7 @@ class MessageHelper {
 
       if (sendMessage != null) {
         pushNotificationMessage(
-            deviceTo:
-                "ePcga9yPRFKEYG6p9rGhte:APA91bE_lu15DDE5vAh_OhRl8Z2tBGSUNjH7K5UBtSyH5eQvZic5il3R1nSAq64pNGNEnHFKOdHFOqLb4SzJhzcu2r0RV-l-0pqpmPaO8NLa31qTDKuq3bAGe9z6o0o1nb6lLR1TQx4K",
+            deviceTo: tokenDevice,
             content: message,
             title: "Message From " + auth.currentUser!.displayName.toString());
       }

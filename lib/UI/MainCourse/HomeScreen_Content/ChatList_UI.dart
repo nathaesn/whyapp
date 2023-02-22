@@ -18,6 +18,8 @@ class ChatList extends StatefulWidget {
 class _ChatListState extends State<ChatList> {
   bool key = false;
 
+  double widhtCont = 50;
+
   //GetUser
   final FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -26,20 +28,41 @@ class _ChatListState extends State<ChatList> {
     return Scaffold(
       floatingActionButton: InkWell(
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ListUserUI(),
-              ));
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => ListUserUI(),
+          //     ));
+          setState(() {
+            if (widhtCont == 50) {
+              widhtCont = 200;
+            } else {
+              widhtCont = 50;
+            }
+          });
         },
-        child: Container(
-          width: 50,
-          decoration: BoxDecoration(
-              color: secondarycolor, borderRadius: BorderRadius.circular(10)),
-          height: 50,
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
+        child: AnimatedContainer(
+          duration: Duration(seconds: 1),
+          curve: Curves.fastOutSlowIn,
+          width: widhtCont,
+          child: Container(
+            width: widhtCont,
+            decoration: BoxDecoration(
+                color: secondarycolor, borderRadius: BorderRadius.circular(10)),
+            height: 50,
+            child: Row(
+              children: [
+                Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+                AnimatedSize(
+                    duration: Duration(seconds: 1),
+                    curve: Curves.fastOutSlowIn,
+                    child: Visibility(
+                        visible: widhtCont == 200, child: Text("Add Chat")))
+              ],
+            ),
           ),
         ),
       ),
