@@ -86,5 +86,5 @@ void pushNotificationMessage({
   final res = await http.post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
       headers: headers, body: json.encode(data));
 
-  print("resss coyyy : " + jsonDecode(res.body)['success']);
+  // print("resss coyyy : " + jsonDecode(res.body)['success']);
 }

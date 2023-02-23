@@ -22,6 +22,9 @@ class _HomeScreenUIState extends State<HomeScreenUI>
   //CONTROLLER
   late TabController _tabController;
 
+  int _screenindex = 0;
+  final screen = [TabListChat(), StatusUI(), ProfileUI()];
+
 //START
   @override
   void initState() {
@@ -78,15 +81,87 @@ class _HomeScreenUIState extends State<HomeScreenUI>
     return SafeArea(
       child: Scaffold(
         body: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 50),
               color: Color(0xffE94D4D),
               height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width * 0.12,
-              child: Text("GGWP"),
+              width: MediaQuery.of(context).size.width * 0.14,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        _screenindex = 0;
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.message,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          "Message",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 18,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        _screenindex = 1;
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.image,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text("Status", style: TextStyle(color: Colors.white)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 18,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        _screenindex = 2;
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.account_box,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text("Profile", style: TextStyle(color: Colors.white)),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
             Expanded(
-              child: TabListChat(),
+              child: screen[_screenindex],
             ),
           ],
         ),

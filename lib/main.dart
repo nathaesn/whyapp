@@ -56,7 +56,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     login();
-    AuthenticationHelper().setProfile();
     super.initState();
   }
 

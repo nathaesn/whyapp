@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:whyapp/UI/MainCourse/Chat/ChatController.dart';
 import 'package:zoom_widget/zoom_widget.dart';
 
 class ImageActionUI extends StatefulWidget {
@@ -12,12 +13,16 @@ class ImageActionUI extends StatefulWidget {
       required this.imageFile,
       required this.chatId,
       required this.idUser,
+      required this.tokenDevice,
+      required this.emailSecondUser,
       required this.uidseconduser})
       : super(key: key);
   File? imageFile;
   String? chatId;
   String? uidseconduser;
   String? idUser;
+  String? tokenDevice;
+  String? emailSecondUser;
 
   @override
   State<ImageActionUI> createState() => _ImageActionUIState();
@@ -50,31 +55,18 @@ class _ImageActionUIState extends State<ImageActionUI> {
             DateTime.now().millisecondsSinceEpoch.toString())
         .putFile(imagesPath);
     var downloadUrl = await snapshot.ref.getDownloadURL();
-    var documentReference = FirebaseFirestore.instance
-        .collection('messages')
-        .doc(widget.chatId.toString())
-        .collection(widget.chatId.toString())
-        .doc(DateTime.now().millisecondsSinceEpoch.toString());
 
-    FirebaseFirestore.instance.runTransaction((transaction) async {
-      final sendmessage = await transaction.set(
-        documentReference,
-        {
-          'idFirstUser': widget.idUser,
-          'idSecondUser': widget.uidseconduser,
-          'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
-          'date': DateTime.now().toString(),
-          'content': message.text != "" ? message.text : "",
-          'image': downloadUrl,
-        },
-      );
+    final sendmessage = MessageHelper().onConnection(
+        chatID: widget.chatId.toString(),
+        image: downloadUrl,
+        message: message.text,
+        tokenDevice: widget.tokenDevice.toString(),
+        uidSecondUsers: widget.uidseconduser.toString(),
+        emailSecondUsers: widget.emailSecondUser.toString());
 
-      if (sendmessage != null) {
-        message.clear();
-        Navigator.pop(context);
-        Navigator.pop(context);
-      }
-    });
+    message.clear();
+    Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   @override

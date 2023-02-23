@@ -107,40 +107,7 @@ class _ChatListState extends State<ChatList> {
           ),
         ),
       ),
-      body: key
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 80,
-                    ),
-                    SizedBox(
-                        height: 250,
-                        width: 350,
-                        child: Lottie.asset(
-                          'Assets/Animation/chat-home.json',
-                          repeat: true,
-                          reverse: true,
-                        )),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Text(
-                        "Anda belum melakukan chat kepada siapapun",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            )
-          : listchat(auth: auth),
+      body: listchat(auth: auth),
     );
   }
 }
@@ -155,85 +122,120 @@ Widget listchat({required FirebaseAuth auth}) {
         .snapshots(),
     builder: (context, snapshot) {
       if (snapshot.hasData) {
-        return ListView.builder(
-          itemCount: snapshot.data!.docs.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: Column(
+        return snapshot.data!.docs.length <= 0
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Dismissible(
-                    onDismissed: (direction) {
-                      showCupertinoDialog(
-                        context: context,
-                        builder: (context) => CupertinoAlertDialog(
-                          title: Text("Delete this chat?"),
-                          content: Text("Hapus "),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 80,
+                      ),
+                      SizedBox(
+                          height: 250,
+                          width: 350,
+                          child: Lottie.asset(
+                            'Assets/Animation/chat-home.json',
+                            repeat: true,
+                            reverse: true,
+                          )),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Text(
+                          "Anda belum melakukan chat kepada siapapun",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
                         ),
-                      );
-                    },
-                    key: Key(snapshot.data!.docs[index].id),
-                    child: ListTile(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChatUI(
-                                  email:
-                                      snapshot.data!.docs[index].get("email")),
-                            ));
-                      },
-                      title: Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Text(
-                              firstAsync().toString(),
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  timeFormated(
-                                      date: snapshot.data!.docs[index]
-                                          .get("lastChatTime")),
-                                  style:
-                                      TextStyle(color: greycolor, fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(snapshot.data!.docs[index].get("lastContent")),
-                          Divider(
-                            color: greycolor,
-                          )
-                        ],
-                      ),
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image.network(
-                          auth.currentUser!.photoURL.toString(),
-                          height: 50,
-                          width: 50,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
+                      )
+                    ],
                   ),
                 ],
-              ),
-            );
-          },
-        );
+              )
+            : ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: Column(
+                      children: [
+                        Dismissible(
+                          onDismissed: (direction) {
+                            showCupertinoDialog(
+                              context: context,
+                              builder: (context) => CupertinoAlertDialog(
+                                title: Text("Delete this chat?"),
+                                content: Text("Hapus "),
+                              ),
+                            );
+                          },
+                          key: Key(snapshot.data!.docs[index].id),
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatUI(
+                                        email: snapshot.data!.docs[index]
+                                            .get("email")),
+                                  ));
+                            },
+                            title: Row(
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: Text(
+                                    "Username",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        timeFormated(
+                                            date: snapshot.data!.docs[index]
+                                                .get("lastChatTime")),
+                                        style: TextStyle(
+                                            color: greycolor, fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(snapshot.data!.docs[index]
+                                    .get("lastContent")),
+                                Divider(
+                                  color: greycolor,
+                                )
+                              ],
+                            ),
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Image.network(
+                                auth.currentUser!.photoURL.toString(),
+                                height: 50,
+                                width: 50,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
       }
       if (snapshot.hasError) {
         return const Text('Error');

@@ -50,7 +50,7 @@ class _ProfileUIState extends State<ProfileUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: ListView(
         children: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),

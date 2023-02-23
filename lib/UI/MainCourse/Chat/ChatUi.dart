@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:whyapp/Fromated/timeFormated.dart';
-import 'package:whyapp/Theme.dart';
 import 'package:whyapp/UI/MainCourse/Chat/Call_UI.dart';
 import 'package:whyapp/UI/MainCourse/Chat/ChatController.dart';
 import 'package:whyapp/UI/MainCourse/Chat/ImageEditor.dart';
@@ -93,6 +92,8 @@ class _ChatUIState extends State<ChatUI> {
         context,
         MaterialPageRoute(
           builder: (context) => ImageActionUI(
+            tokenDevice: tokenDevice,
+            emailSecondUser: widget.email,
             imageFile: imageFile,
             chatId: chatId,
             idUser: auth.currentUser!.uid,
@@ -332,6 +333,7 @@ class _ChatUIState extends State<ChatUI> {
                             if (_formKey.currentState!.validate()) {
                               if (message.text != "") {
                                 MessageHelper().onConnection(
+                                  image: "",
                                     tokenDevice: tokenDevice,
                                     chatID: chatId.toString(),
                                     message: message.text,

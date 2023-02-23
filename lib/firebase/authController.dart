@@ -75,12 +75,11 @@ class AuthenticationHelper {
 
   //Logout
   Future signOut() async {
-    await FirebaseAuth.instance.signOut();
-
     CollectionReference users = await firestore.collection('user');
     await users.doc(auth.currentUser!.email).update({
       "tokenDevice": "",
     });
+    await FirebaseAuth.instance.signOut();
   }
 
   //VerifyEmail

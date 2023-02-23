@@ -24,6 +24,7 @@ class MessageHelper {
   void onConnection(
       {required String chatID,
       required String message,
+      required String image,
       required String tokenDevice,
       required String uidSecondUsers,
       required String emailSecondUsers}) async {
@@ -70,6 +71,7 @@ class MessageHelper {
 
         onSendMessage(
             chatID: chatID,
+            image: image,
             message: message,
             tokenDevice: tokenDevice,
             uidSecondUsers: uidSecondUsers,
@@ -120,6 +122,7 @@ class MessageHelper {
       onSendMessage(
           chatID: chatID,
           message: message,
+          image: image,
           tokenDevice: tokenDevice,
           uidSecondUsers: uidSecondUsers,
           emailSecondUsers: emailSecondUsers);
@@ -136,6 +139,7 @@ class MessageHelper {
       required String message,
       required String uidSecondUsers,
       required String tokenDevice,
+      required String image,
       required String emailSecondUsers}) {
     var documentReference = FirebaseFirestore.instance
         .collection('messages')
@@ -152,7 +156,7 @@ class MessageHelper {
           'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
           'date': DateTime.now().toString(),
           'content': message,
-          'image': "",
+          'image': image != "" ? image : "",
         },
       );
 
