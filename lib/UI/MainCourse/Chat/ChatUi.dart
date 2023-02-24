@@ -199,11 +199,11 @@ class _ChatUIState extends State<ChatUI> {
           titleSpacing: -15,
           title: ListTile(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => profileUserSecond(),
-                  ));
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => profileUserSecond(),
+              //     ));
             },
             leading: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 3),
@@ -333,7 +333,7 @@ class _ChatUIState extends State<ChatUI> {
                             if (_formKey.currentState!.validate()) {
                               if (message.text != "") {
                                 MessageHelper().onConnection(
-                                  image: "",
+                                    image: "",
                                     tokenDevice: tokenDevice,
                                     chatID: chatId.toString(),
                                     message: message.text,

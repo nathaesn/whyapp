@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:whyapp/UI/MainCourse/ListUser/UsersListModels.dart';
 
 class UserAllController extends GetxController {
-  var isLoading = true;
+  var isLoading = false;
   var userList = <allUserModels>[];
 
   Future<void> getData() async {
