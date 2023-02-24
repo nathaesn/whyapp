@@ -70,7 +70,74 @@ class _LoginUIState extends State<LoginUI> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showCupertinoModalPopup(
+                        context: context,
+                        builder: (
+                          context,
+                        ) {
+                          return CupertinoAlertDialog(
+                            title: Text("Lupa Password"),
+                            content: Column(
+                              children: [
+                                SizedBox(
+                                    height: 120,
+                                    child: Lottie.asset(
+                                      'Assets/Animation/verify-animation.json',
+                                      repeat: false,
+                                    )),
+                                Text(
+                                  "Kirim verifikasi reset password ke email anda",
+                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Tidak")),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    AuthenticationHelper()
+                                        .forgotPasswordNotLogin(email_controller.text,context);
+
+                                    showCupertinoDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          CupertinoAlertDialog(
+                                        content: Column(
+                                          children: [
+                                            SizedBox(
+                                                height: 120,
+                                                child: Lottie.asset(
+                                                    repeat: false,
+                                                    'Assets/Animation/success-animation.json')),
+                                            Text(
+                                              "Verifikasi ganti password telah berhasil dikirim, silahkan cek email anda",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("Oke"))
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  child: Text("Ya"))
+                            ],
+                          );
+                        },
+                      );
+                    },
                     child: Text(
                       "Lupa Password?",
                       style: TextStyle(

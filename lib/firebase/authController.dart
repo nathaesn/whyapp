@@ -1,7 +1,11 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:lottie/lottie.dart';
 
 class AuthenticationHelper {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -128,6 +132,34 @@ class AuthenticationHelper {
     await users.doc(auth.currentUser!.email).update({
       "tokenDevice": token,
     });
+  }
+
+  Future<bool> changePassword(
+      String currentPassword, String newPassword, context) async {
+    bool success = false;
+
+    final cred = await EmailAuthProvider.credential(
+        email: user.email!, password: currentPassword);
+    await user.reauthenticateWithCredential(cred).then((value) async {
+      await user.updatePassword(newPassword).then((_) {
+        success = true;
+      }).catchError((error) {
+        print(error);
+      });
+    }).catchError((err) {
+      print(err);
+    });
+
+    return success;
+  }
+
+  void forgotPassword(context) async {
+    await _auth.sendPasswordResetEmail(
+        email: auth.currentUser!.email.toString());
+  }
+
+  void forgotPasswordNotLogin(String email, context) async {
+    await _auth.sendPasswordResetEmail(email: email);
   }
 }
 ///https://firebase.flutter.dev/docs/firestore/usage/
