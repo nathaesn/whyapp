@@ -92,8 +92,6 @@ class AuthenticationHelper {
   }
 
   Future inputDataUser() async {
-    final token = await _fcm.getToken();
-
     // users.add({});
     CollectionReference users = await firestore.collection('user');
     await users.doc(auth.currentUser!.email).set({
@@ -102,8 +100,9 @@ class AuthenticationHelper {
       "email": auth.currentUser!.email,
       "image": auth.currentUser!.photoURL,
       "status": "halo, salam kenal😊",
-      "tokenDevice": token,
+      "tokenDevice": "",
     });
+    setTokenDevice();
   }
 
   Future updateUserInfo({required String status}) async {

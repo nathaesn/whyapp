@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:whyapp/Fromated/timeFormated.dart';
+import 'package:whyapp/NotificationController.dart';
 import 'package:whyapp/UI/MainCourse/Chat/Call_UI.dart';
 import 'package:whyapp/UI/MainCourse/Chat/ChatController.dart';
 import 'package:whyapp/UI/MainCourse/Chat/ImageEditor.dart';
@@ -183,6 +184,11 @@ class _ChatUIState extends State<ChatUI> {
           actions: [
             IconButton(
               onPressed: () {
+                pushNotificationMessage(
+                    deviceTo: tokenDevice,
+                    content: "Voice call from " +
+                        auth.currentUser!.displayName.toString(),
+                    title: "Voice Call");
                 Navigator.push(
                     context,
                     MaterialPageRoute(

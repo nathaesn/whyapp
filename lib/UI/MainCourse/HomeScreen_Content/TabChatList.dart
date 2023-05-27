@@ -11,6 +11,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swipe_to/swipe_to.dart';
 import 'package:whyapp/Fromated/timeFormated.dart';
+import 'package:whyapp/NotificationController.dart';
 import 'package:whyapp/Theme.dart';
 import 'package:whyapp/UI/MainCourse/Chat/Call_UI.dart';
 import 'package:whyapp/UI/MainCourse/Chat/ChatController.dart';
@@ -558,6 +559,11 @@ class _TabListChatState extends State<TabListChat> {
                         actions: [
                           IconButton(
                             onPressed: () {
+                              pushNotificationMessage(
+                                  deviceTo: tokenDevice,
+                                  content: "Voice call from " +
+                                      auth.currentUser!.displayName.toString(),
+                                  title: "Voice Call");
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

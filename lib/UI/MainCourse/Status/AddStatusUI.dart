@@ -133,6 +133,7 @@ class _AddStatusUIState extends State<AddStatusUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Tambah Status"),
       ),

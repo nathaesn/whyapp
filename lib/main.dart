@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+  import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -67,6 +67,7 @@ class _MyAppState extends State<MyApp> {
         textTheme: GoogleFonts.poppinsTextTheme(),
         primarySwatch: themecolor,
         unselectedWidgetColor: secondarycolorhigh,
+        
       ),
       home: islogin
           ? isverify
